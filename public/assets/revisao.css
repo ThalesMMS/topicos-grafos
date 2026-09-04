@@ -1,0 +1,61 @@
+/* Ajustes de legibilidade do roteiro de revisão; mantém os tokens da marca.
+ * Não reduzir fonte para esconder transbordamento: textos e diagramas devem
+ * caber no telão. Em celulares, a rolagem fica contida no slide/tabela.
+ */
+.presenter .slide-content,
+.presenter .split-text,
+.presenter .trace-side {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.presenter .formula code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Rótulos com mais de um caractere são cápsulas, não círculos. */
+.gd-node rect {
+  fill: var(--color-surface-raised);
+  stroke: var(--color-line-strong);
+  stroke-width: 2.5;
+}
+.gd-node--active rect { fill: var(--color-accent); stroke: var(--color-accent); }
+.gd-node--done rect {
+  fill: color-mix(in srgb, var(--color-accent-strong) 32%, var(--color-surface-raised));
+  stroke: var(--color-accent-strong);
+}
+.gd-node--warn rect {
+  fill: color-mix(in srgb, var(--color-danger) 26%, var(--color-surface-raised));
+  stroke: var(--color-danger);
+}
+.gd-node--dim rect { fill: var(--color-surface); stroke: var(--color-line); }
+
+/* Em resolução de projetor, manter texto e figura lado a lado. */
+@media (min-width: 60rem) {
+  .presenter .split-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  }
+  .presenter .trace-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+  .presenter .split-visual { order: 0; }
+  .presenter .graph-draw { max-height: min(55vh, 34rem); }
+  .presenter .trace-visual .graph-draw { max-height: min(48vh, 30rem); }
+}
+
+/* Tabelas/fórmulas largas rolam dentro de sua caixa, não a página inteira. */
+@media (max-width: 59.99rem) {
+  .presenter .slide { padding-inline: 1.5rem; }
+  .presenter .slide-content { width: 100%; }
+  .presenter .table-scroll,
+  .presenter .pseudocode,
+  .presenter .formula { min-width: 0; max-width: 100%; }
+  .presenter .slide-table tbody th { white-space: normal; }
+  .presenter .compare-grid { grid-template-columns: 1fr; }
+  .presenter .corner-qr { width: 4.5rem; }
+  .presenter .question-source { max-width: calc(100% - 5rem); }
+}
+
+/* O cronômetro é interativo, embora seu contêiner deixe cliques passarem. */
+.presenter .pace { pointer-events: auto; }
