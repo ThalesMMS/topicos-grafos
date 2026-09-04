@@ -48,7 +48,7 @@ export const slides = [
     "note": {
       "kind": "key",
       "title": "Decisão ≠ construção",
-      "text": "Decidir existência é O(n+m). Fleury com testes repetidos de ponte não é linear (O(m²) na implementação usual). Hierholzer permite construção linear."
+      "text": "Decidir existência é O(n+m). Fleury com testes repetidos de ponte não é linear (O(m²) na implementação usual). Hierholzer constrói e intercala circuitos enquanto restam arestas, em tempo linear."
     },
     "cobertura": [
       "fleury"

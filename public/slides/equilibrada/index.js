@@ -7,27 +7,34 @@ import { slides as digrafos } from './05-digrafos.js';
 import { slides as percursos } from './06-percursos.js';
 import { slides as planaridade } from './07-planaridade.js';
 import { slides as fluxo } from './08-fluxo.js';
-export { polls } from './perguntas.js';
+import { polls as autorais } from './perguntas.js';
+import { polls as oficiais, enade } from './enade.js';
+import { complementos } from './complementos.js';
+export const polls = { ...autorais, ...oficiais };
+const atividades = { fundamentos: ['enade_aperto'], conectividade: ['enade_equivalencia'], caminhos: ['enade_dijkstra', 'enade_ospf', 'enade_gulosa'] };
+function ampliar(id, slides) {
+  return [...slides, ...(complementos[id] || []), ...(atividades[id] || []).flatMap(enade)];
+}
 
 // Tempo estimado para REVISÃO: atividades e discussão incluídas; ensaiar antes.
 // Não é uma proposta de ministrar toda a disciplina do zero em uma hora.
 export const MODULOS = [
-  { id: 'fundamentos', title: 'Fundamentos e representações', minutes: 10, slides: fundamentos },
-  { id: 'conectividade', title: 'Conectividade e buscas', minutes: 13, slides: conectividade },
-  { id: 'arvores', title: 'Árvores e AGM', minutes: 6, slides: arvores },
-  { id: 'caminhos', title: 'Caminhos mínimos', minutes: 7, slides: caminhos },
-  { id: 'digrafos', title: 'Dígrafos e dependências', minutes: 4, slides: digrafos },
-  { id: 'percursos', title: 'Euler e Hamilton', minutes: 4, slides: percursos },
-  { id: 'planaridade', title: 'Planaridade e coloração', minutes: 7, slides: planaridade },
-  { id: 'fluxo', title: 'Fluxo máximo', minutes: 6, slides: fluxo }
+  { id: 'fundamentos', title: 'Fundamentos e representações', minutes: 13, slides: ampliar('fundamentos', fundamentos) },
+  { id: 'conectividade', title: 'Conectividade e buscas', minutes: 16, slides: ampliar('conectividade', conectividade) },
+  { id: 'arvores', title: 'Árvores e AGM', minutes: 6, slides: ampliar('arvores', arvores) },
+  { id: 'caminhos', title: 'Caminhos mínimos', minutes: 18, slides: ampliar('caminhos', caminhos) },
+  { id: 'digrafos', title: 'Dígrafos e dependências', minutes: 6, slides: ampliar('digrafos', digrafos) },
+  { id: 'percursos', title: 'Euler e Hamilton', minutes: 5, slides: ampliar('percursos', percursos) },
+  { id: 'planaridade', title: 'Planaridade e coloração', minutes: 8, slides: ampliar('planaridade', planaridade) },
+  { id: 'fluxo', title: 'Fluxo máximo', minutes: 10, slides: ampliar('fluxo', fluxo) }
 ];
-export const DURACAO_ESTIMADA = 60;
+export const DURACAO_ESTIMADA = 85;
 export const slides = [
   {
     id: 'abertura-equilibrada', type: 'cover', minutes: 1,
     eyebrow: 'Teoria dos Grafos · revisão',
     title: 'Modelar, entender,', highlight: 'escolher e verificar',
-    description: 'Dos fundamentos às famílias de problemas. Cinco exercícios autorais, distribuídos pelo conteúdo, com votação pelo celular.'
+    description: 'Dos fundamentos às famílias de problemas. Cinco questões do ENADE e cinco exercícios autorais, com votação pelo celular.'
   },
   ...MODULOS.flatMap(m => m.slides.map(slide => ({
     ...slide, module: m.id,
@@ -55,7 +62,7 @@ export const slides = [
       'Apoio técnico: Sedgewick e Wayne, Algorithms, 4ª edição; Princeton.',
       'Fontes por módulo e limites: docs/ROTEIRO_EQUILIBRADO.md.'
     ],
-    note: { kind: 'key', title: 'Escopo', text: 'Esta revisão cobre grafos. Não pretende cobrir toda a parte de computabilidade. Os cinco exercícios são autorais, não questões oficiais do ENADE.' }
+    note: { kind: 'key', title: 'Escopo', text: 'Esta revisão cobre grafos. Não pretende cobrir toda a parte de computabilidade. Inclui as cinco questões do ENADE do roteiro anterior e cinco exercícios autorais, identificados separadamente.' }
   },
   {
     id: 'fechamento-equilibrado', type: 'closing',

@@ -34,13 +34,13 @@ function assertViable(g,flows,value){
 test('roteiro principal tem IDs únicos e mantém abertura/fechamento',()=>{
   const ids=CONFIG.slides.map(s=>s.id); assert.equal(new Set(ids).size,ids.length);
   assert.equal(CONFIG.slides[0].type,'cover'); assert.equal(CONFIG.slides.at(-1).type,'closing');
-  assert.ok(CONFIG.slides.length<=65,'não inflar o roteiro com apêndices inteiros');
+  assert.ok(CONFIG.slides.length<=85,'não inflar o roteiro com apêndices inteiros');
 });
-test('oito módulos e orçamento explícito para uma revisão de 60 minutos',()=>{
-  assert.equal(MODULOS.length,8);assert.equal(DURACAO_ESTIMADA,60);
+test('oito módulos e orçamento explícito para uma revisão de 85 minutos',()=>{
+  assert.equal(MODULOS.length,8);assert.equal(DURACAO_ESTIMADA,85);
   const total=CONFIG.slides.reduce((sum,s)=>sum+(s.minutes||0),0);
   assert.equal(total,DURACAO_ESTIMADA);
-  assert.equal(MODULOS.find(m=>m.id==='fluxo').minutes,6);
+  assert.equal(MODULOS.find(m=>m.id==='fluxo').minutes,10);
   assert.ok(MODULOS.find(m=>m.id==='fundamentos').minutes>=10);
   assert.ok(MODULOS.find(m=>m.id==='conectividade').minutes>=13);
   for(const m of MODULOS)assert.equal(m.slides.filter(s=>s.type==='section').length,1);
@@ -51,7 +51,7 @@ test('cobertura essencial está no deck carregado, não apenas no apêndice',()=
 });
 test('cinco atividades em cinco domínios; alternativas sincronizadas e solução fora da votação',()=>{
   assert.equal(QUESTOES.length,5);assert.equal(new Set(QUESTOES.map(q=>q.module)).size,5);
-  assert.equal(Object.keys(CONFIG.polls).length,5);
+  assert.equal(Object.keys(CONFIG.polls).length,10);
   for(const q of QUESTOES){
     const s=pergunta(q.id),r=resposta(q.id),poll=CONFIG.polls[s.poll];
     assert.equal(main(s.id).module,q.module);assert.match(s.source,/autoral/);

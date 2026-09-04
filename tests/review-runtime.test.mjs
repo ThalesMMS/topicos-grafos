@@ -36,7 +36,7 @@ test('o bloco de fechamento começa na síntese, sem consumir fluxo', () => {
   const bounds = CONFIG.slides.filter(s => typeof s.minutes === 'number');
   assert.equal(bounds.at(-1).id, 'sintese');
   assert.equal(bounds.at(-1).minutes, 2);
-  assert.equal(bounds.reduce((sum, s) => sum + s.minutes, 0), 60);
+  assert.equal(bounds.reduce((sum, s) => sum + s.minutes, 0), 85);
   assert.equal(CONFIG.slides.at(-1).minutes, undefined);
 });
 
@@ -94,7 +94,7 @@ function fixture(stored) {
     send: (s, m) => room.webSocketMessage(s, JSON.stringify(m)) };
 }
 
-test('cinco enquetes: abrir, votar, substituir voto, resolver e resetar', async () => {
+test('dez enquetes: abrir, votar, substituir voto, resolver e resetar', async () => {
   const f = fixture();
   const presenter = f.socket({ role: 'presenter', control: true });
   const alice = f.socket({ role: 'audience', deviceId: 'alice', control: false });
@@ -127,14 +127,15 @@ test('sala antiga migra enquetes e público não pode controlar o telão', async
   const f = fixture({ version: 1, activity: 'poll:enade_ospf', sequence: 9,
     polls: { enade_ospf: { open: true, byDevice: { old: 'a' } } }, questions: [] });
   const state = await f.room.getState();
-  assert.equal(state.activity, 'stage');
+  assert.equal(state.activity, 'poll:enade_ospf');
+  assert.deepEqual(state.polls.enade_ospf.byDevice, { old: 'a' });
   assert.deepEqual(Object.keys(state.polls).sort(), Object.keys(CONFIG.polls).sort());
   const audience = f.socket({ role: 'audience', deviceId: 'x', control: false });
   await f.send(audience, { type: 'activity', activity: 'closing' });
-  assert.equal(state.activity, 'stage');
+  assert.equal(state.activity, 'poll:enade_ospf');
 });
 
-test('configuração pública entrega as cinco perguntas, mas não slides/gabaritos', async () => {
+test('configuração pública entrega as dez perguntas, mas não slides/gabaritos', async () => {
   const response = await worker.fetch(new Request('https://example.test/audience.config.js'), {});
   assert.equal(response.status, 200);
   const source = await response.text();
