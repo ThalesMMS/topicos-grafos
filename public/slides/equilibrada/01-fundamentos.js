@@ -59,7 +59,7 @@ export const slides = [
       [
         "Bipartido",
         "Duas partes; sem aresta interna",
-        "Kₚ,ᵩ tem p+q vértices e pq arestas"
+        "K(p, q) tem p+q vértices e pq arestas"
       ],
       [
         "Complementar de G",
