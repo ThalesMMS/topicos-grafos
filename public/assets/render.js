@@ -293,7 +293,7 @@ function questionSlide(slide) {
 
   const rodape = revelado
     ? `<aside class="answer-panel">
-        <p class="answer-head">Gabarito oficial · ${escapeHtml((correta || '').toUpperCase())}</p>
+        <p class="answer-head">${text(slide.answerLabel || 'Gabarito')} · ${escapeHtml((correta || '').toUpperCase())}</p>
         ${slide.why ? `<p class="answer-why">${text(slide.why)}</p>` : ''}
       </aside>`
     : slide.poll
