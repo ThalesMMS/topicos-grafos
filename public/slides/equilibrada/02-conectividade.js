@@ -104,7 +104,7 @@ export const slides = [
   {
     "id": "pontes",
     "type": "concept",
-    "title": "Conexidade não significa resistência a falhas",
+    "title": "Um grafo conexo ainda pode ser frágil",
     "graph": G.destacar(G.rede,{nodes:{D:'warn'},edges:[['D','E']],caption:'D é articulação; DE é ponte.'}),
     "description": "Ponte: aresta cuja remoção aumenta o número de componentes. Articulação: vértice com esse efeito.",
     "points": [

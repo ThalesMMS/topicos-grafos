@@ -1,0 +1,102 @@
+@font-face{font-family:Kalam;src:url('/assets/fonts/Kalam-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+:root{color-scheme:light;--color-surface-raised:#f0ebdf;--color-line:rgba(38,48,49,.16);--color-line-strong:#777f7a;--color-danger:#a63e30;--color-focus:#a44322;--shadow-card:none;--radius-sm:3px;--radius-md:5px;--radius-lg:7px}
+.button{color:#fff}.button.secondary{color:var(--color-text)}
+.presenter .slide{background:#f5f2e9;padding:3.8rem 5vw 4.3rem;overflow-y:auto}
+.presenter .slide{transition:none;animation:none}
+.presenter .slide:not(.is-active){display:none}
+.presenter .slide::before{content:'';position:absolute;left:2.5vw;right:2.5vw;top:3rem;border-top:1px solid #c9c7bc;pointer-events:none}
+.slide-owner{position:absolute;left:5vw;top:1.1rem;font:500 .8rem 'Segoe UI',sans-serif;letter-spacing:.035em;color:#59635e}
+.presenter .slide-title,.presenter .concept-title,.presenter .statement-title,.presenter .section-title,.presenter .trace-title{font-family:Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-.035em;line-height:1.08;text-wrap:balance}
+.presenter .slide-title{font-size:clamp(3rem,5.8vw,6.3rem);max-width:15ch}
+.presenter .concept-title,.presenter .statement-title{font-size:clamp(2rem,3.2vw,3.6rem);max-width:27ch}
+.presenter .section-title{font-size:clamp(3rem,5vw,5.5rem)}
+.presenter .trace-title{font-size:clamp(1.9rem,2.8vw,3rem)}
+.presenter .eyebrow,.presenter .question-source{color:#17685b;letter-spacing:.07em;font-size:.85rem;font-weight:700}
+.presenter .slide-description{font-size:clamp(1rem,1.5vw,1.4rem);line-height:1.5;margin-top:1.25rem;color:#535d61}
+.presenter .slide-points{font-size:clamp(1.05rem,1.5vw,1.4rem);line-height:1.45}
+.presenter .slide-points li+li{margin-top:.7rem}
+.presenter .callout{border:0;border-left:3px solid #b47637;border-radius:0;background:#ebe5d6;box-shadow:none;padding:.75rem 1rem;margin-top:1.3rem}
+.presenter .callout-title{font-size:.78rem;color:#785021}
+.presenter .callout-text{font-size:clamp(.9rem,1.2vw,1.1rem);line-height:1.45;color:#343c38}
+.presenter .compare-card{background:transparent;border:0;border-top:2px solid #798e7d;border-radius:0;padding:1.2rem 0;box-shadow:none}
+.presenter .compare-title{font-family:Georgia,serif;font-size:1.6rem;font-weight:400}
+.presenter .compare-card li{font-size:clamp(1rem,1.4vw,1.3rem)}
+.presenter .compare-grid{gap:2.8rem}
+.presenter .pseudocode{background:#eaece3;border:0;border-left:3px solid #17685b;border-radius:1px;box-shadow:none;font-size:clamp(.9rem,1.3vw,1.2rem);line-height:1.65;padding:1rem 1.4rem;white-space:pre-wrap}
+.presenter .slide-table{font-size:clamp(.92rem,1.25vw,1.2rem);background:transparent}
+.presenter .slide-table th,.presenter .slide-table td{padding:.65rem .8rem;border-color:#c9c7bc;background:transparent}
+.presenter .slide-table thead th{color:#17685b;border-bottom:2px solid #63766a;font-size:.85em}
+.presenter .slide-table tbody th{font-weight:600;white-space:normal}
+.presenter .step-list{position:relative;margin-top:1.5rem;gap:.9rem}
+.presenter .step-list li{border:0;background:none;padding:0;gap:1rem;align-items:start}
+.presenter .step-list li+li{margin-top:1rem}
+.presenter .step-index{font-family:Kalam,cursive;font-size:1.8rem;font-weight:400;background:transparent;color:#17685b;border:2px solid #17685b;border-radius:46% 54% 49% 51%;width:2.8rem;height:2.8rem;transform:rotate(-4deg)}
+.presenter .step-body strong{font-size:clamp(1rem,1.45vw,1.3rem);font-weight:600}
+.presenter .step-body>span{font-size:clamp(.95rem,1.25vw,1.2rem);line-height:1.45;color:#535d61}
+.presenter .graph-figure{background-image:radial-gradient(#c1c5b8 .7px,transparent .7px);background-size:20px 20px;padding:1rem .5rem .5rem;border:0;border-radius:0}
+.presenter .gd-caption{font-family:Kalam,cursive;font-size:1.05rem;color:#4a5c50;line-height:1.35;margin-top:.6rem}
+.presenter .gd-edge{stroke:#68786d;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.presenter .gd-edge--tree,.presenter .gd-edge--active{stroke:#17685b;stroke-width:4}
+.presenter .gd-edge--warn{stroke:#a63e30;stroke-dasharray:6 5}
+.presenter .gd-edge--dim{stroke:#a5aca1}
+.presenter .gd-node circle,.presenter .gd-node rect{stroke:none;fill:#f5f2e9}
+.gd-ink{fill:none;stroke:var(--color-line-strong);stroke-width:1.5;stroke-linejoin:round}
+.gd-ink--1{opacity:.45;stroke-width:.8}
+.presenter .gd-node--done .gd-ink,.presenter .gd-node--active .gd-ink{stroke:#17685b;stroke-width:2}
+.presenter .gd-node--active circle,.presenter .gd-node--active rect,.presenter .gd-node--done circle,.presenter .gd-node--done rect{fill:#d7e5d5}
+.presenter .gd-node-label,.presenter .gd-edge-label,.presenter .gd-node-note{font-family:Kalam,cursive;font-weight:400;fill:#263c31}
+.presenter .gd-edge-label{font-size:22px;stroke:#f5f2e9;stroke-width:7;paint-order:stroke}
+.presenter .gd-node-label{font-size:23px}
+.presenter .gd-node-note{font-size:19px}
+.presenter .gd-node--active .gd-node-label{fill:#14594d}
+.presenter .qr-card{border-radius:0;background:#fff;border:1px solid #c7c7b9;box-shadow:5px 5px 0 #dedbcc;rotate:1deg}
+.presenter .qr-card a{font-size:.8rem;color:#17685b}
+.presenter .corner-qr{width:4.4rem;top:.6rem;right:1.3rem;border-radius:3px;box-shadow:none}
+.presenter .presenter-chrome{padding:0 1.5rem 1rem}
+.presenter .icon-button,.presenter .pace{border:1px solid #bfc4b7;background:#f5f2e9;color:#354c40;box-shadow:none;border-radius:3px}
+.presenter .progress{height:2px;background:#e4e2d8}
+.presenter .slide-counter{color:#535d61}
+.presenter .question-prompt{font:400 clamp(1.8rem,2.8vw,3rem)/1.15 Georgia,serif;max-width:30ch}
+.presenter .question-layout{max-width:1100px}
+.presenter .alternatives-grid{gap:.5rem;margin-top:1.2rem}
+.presenter .alt{border:1px solid #c9c7bc;border-radius:2px;background:#fffdf7;padding:.6rem .9rem;font-size:clamp(.95rem,1.2vw,1.15rem)}
+.presenter .alt--correta{border:2px solid #17685b;background:#e0ecdc}
+.presenter .alt--descartada{opacity:.62}
+.presenter .alt-letter{background:transparent;color:#17685b;font-family:Kalam,cursive}
+.presenter .answer-panel{border:0;border-top:2px solid #17685b;border-radius:0;background:transparent;padding:1rem 0 0;margin-top:1rem}
+.presenter .answer-head{color:#17685b}
+.presenter .answer-why{font-size:clamp(1rem,1.4vw,1.3rem);line-height:1.5}
+.presenter .original-layout{width:100%;height:calc(100dvh - 8.1rem);display:flex;flex-direction:column;gap:.55rem}
+.original-head{display:flex;align-items:center;justify-content:space-between;padding-right:3.5rem;gap:1rem}
+.original-head p{margin:0}.exam-time{font:1rem Kalam,cursive;color:#6a573c}
+.exam-pages{flex:1;min-height:0;display:flex;justify-content:center;align-items:center;gap:1.2rem}
+.exam-image{display:flex;min-width:0;max-width:100%;height:100%;align-items:center;justify-content:center}
+.exam-image img{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 15rem);object-fit:contain;box-shadow:0 2px 9px #3c45321a;background:white}
+.exam-pages--two{display:grid;grid-template-columns:1.2fr 1fr;align-items:center}
+.exam-pages--two .exam-image{height:auto;max-height:100%}
+.exam-pages--two img{max-height:58vh}
+.exam-footer{display:flex;justify-content:space-between;align-items:center;gap:1rem;font-size:.82rem}
+.exam-footer p{margin:0}.exam-votes{display:flex;gap:.5rem;max-width:100%;flex-wrap:wrap;align-items:center}.presenter .exam-votes .alt{display:flex;gap:.7rem;padding:.25rem .7rem;min-height:0;min-width:0;margin:0}.exam-votes .alt-pct{position:static;font-size:.8rem;color:#59635e}
+.exam-transcript{font-size:.8rem;color:#535d61}.exam-transcript[open]{background:#fffdf7;padding:1rem;overflow:auto;max-height:35vh;flex-shrink:0}
+.presenter .slide[data-kind=original]{padding-top:3.7rem;padding-bottom:4.4rem;height:100dvh}
+.article-layout{display:grid;grid-template-columns:1fr 1.8fr;gap:4rem;align-items:start}
+.article-date{border-right:1px solid #b6bfb0;padding-right:2rem}
+.article-date>span{font:400 clamp(4rem,7vw,7rem)/1 Georgia,serif;color:#17685b}
+.article-paper{font:italic 1.25rem/1.4 Georgia,serif;margin-top:2rem}
+.article-authors{font-size:.85rem;color:#535d61;line-height:1.6}
+.article-date a{display:inline-block;font-size:.85rem;margin-top:.6rem}
+.article-connection{border-top:2px solid #798e7d;padding-top:1rem;font-size:1.05rem;line-height:1.5}
+.article-limit{font-size:.9rem;line-height:1.5;color:#62665e}
+.source-links{margin-top:2rem}
+@media(max-width:959px){.presenter .slide{padding:4rem 1.5rem 5rem;align-items:start}.article-layout{grid-template-columns:1fr;gap:1.5rem}.article-date{border-right:0;border-bottom:1px solid #b6bfb0;padding-bottom:1rem}.article-date>span{font-size:3.5rem}.article-paper{margin-top:.5rem}.original-head{display:block}.exam-footer{flex-wrap:wrap}.exam-pages--two{display:flex;flex-direction:column}.presenter .slide[data-kind=original]{height:auto;min-height:100dvh}.presenter .original-layout{height:auto}.exam-image img{max-height:65vh}.exam-pages--two img{max-height:none}.exam-pages{min-height:0}.presenter .graph-draw{max-height:none}.presenter .split-layout,.presenter .trace-layout{display:grid;grid-template-columns:1fr}.presenter .split-visual{order:0}.presenter .graph-figure{margin-top:1rem}}
+@media(min-width:960px) and (max-height:750px){.presenter .slide{padding-top:3.5rem;padding-bottom:4rem}.presenter .concept-title{font-size:2.35rem}.presenter .slide-description{font-size:1.05rem;margin-top:.8rem}.presenter .slide-points{font-size:1.07rem}.presenter .callout{margin-top:.8rem}.presenter .step-list li+li{margin-top:.6rem}.presenter .slide-table th,.presenter .slide-table td{padding:.4rem .6rem}.article-layout{gap:2rem}.article-connection{font-size:.95rem}.article-limit{font-size:.8rem}}
+
+/* Capa enxuta: sem endereço escrito, com os nomes sob o título. */
+.cover-names{margin:1.4rem 0 0;font:600 clamp(1rem,1.5vw,1.35rem)/1.5 'Segoe UI',sans-serif;color:var(--color-text-muted);letter-spacing:.01em}
+.qr-card--limpo{padding:1rem}
+.qr-card--limpo a{display:none}
+/* A imagem da questão não é mais link; mantém a moldura sem o cursor de link. */
+.exam-image{display:block}
+
+/* Número da parte no topo de cada slide. */
+.slide-owner{position:absolute;left:auto;right:2.2vw;top:1.1rem;display:grid;place-items:center;width:1.9rem;height:1.9rem;border-radius:50%;background:var(--color-accent);color:#fff;font:700 1rem/1 'Segoe UI',sans-serif;letter-spacing:0}

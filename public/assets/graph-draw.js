@@ -77,7 +77,7 @@ function edgeGeometry(from, to, curve) {
   return {
     path: bend
       ? `M ${start.x.toFixed(1)} ${start.y.toFixed(1)} Q ${controlX.toFixed(1)} ${controlY.toFixed(1)} ${end.x.toFixed(1)} ${end.y.toFixed(1)}`
-      : `M ${start.x.toFixed(1)} ${start.y.toFixed(1)} L ${end.x.toFixed(1)} ${end.y.toFixed(1)}`,
+      : `M ${start.x.toFixed(1)} ${start.y.toFixed(1)} Q ${(midX + normalX * 2.4).toFixed(1)} ${(midY + normalY * 2.4).toFixed(1)} ${end.x.toFixed(1)} ${end.y.toFixed(1)}`,
     // No traço reto a etiqueta sai do caminho pela normal; na curva ela
     // acompanha a barriga da curva (ponto médio da Bézier = 1/2 do controle).
     labelX: bend ? midX + normalX * (bend * 0.55) : midX + normalX * 18,
@@ -96,7 +96,7 @@ function loopGeometry(node) {
   };
 }
 
-function drawEdge(spec, edge) {
+function drawEdge(spec, edge, prefix) {
   const from = nodeById(spec.nodes, edge.from);
   const to = nodeById(spec.nodes, edge.to);
   if (!from || !to) return '';
@@ -106,7 +106,7 @@ function drawEdge(spec, edge) {
   const markerVariant = edge.state === 'active' || edge.state === 'tree'
     ? 'active'
     : edge.state === 'dim' ? 'dim' : 'base';
-  const marker = spec.directed ? ` marker-end="url(#gd-arrow-${markerVariant})"` : '';
+  const marker = spec.directed ? ` marker-end="url(#${prefix}-arrow-${markerVariant})"` : '';
   const text = edge.label ?? (edge.weight === undefined ? '' : edge.weight);
 
   const label = text === '' ? '' : `
@@ -124,8 +124,18 @@ function drawNode(node) {
   const note = node.note
     ? `<text class="gd-node-note" x="${node.x}" y="${(node.y + ry + 22).toFixed(1)}">${escapeXml(node.note)}</text>`
     : '';
+  // Duas voltas discretamente diferentes de caneta; posições e rótulos estáveis.
+  const outline = [0, 1].map(pass => {
+    const points = Array.from({length:73}, (_,i)=>{
+      const angle=i/72*Math.PI*2;
+      const wobble=Math.sin(angle*3+node.x*.01+pass)*.85+Math.sin(angle*5+pass)*.4;
+      return `${(node.x+Math.cos(angle)*(rx+wobble+pass*.5)).toFixed(1)},${(node.y+Math.sin(angle)*(ry+wobble)).toFixed(1)}`;
+    });
+    return `<path class="gd-ink gd-ink--${pass}" d="M ${points.join(' L ')} Z" />`;
+  }).join('');
   return `<g class="gd-node${state}">
       ${body}
+      ${outline}
       <text class="gd-node-label" x="${node.x}" y="${(node.y + 7).toFixed(1)}">${escapeXml(labelOf(node))}</text>
       ${note}
     </g>`;
@@ -137,7 +147,7 @@ const ARROW_VARIANTS = [
   ['dim', 'var(--color-line)']
 ];
 
-const markers = () => ARROW_VARIANTS.map(([name, fill]) => `<marker id="gd-arrow-${name}" viewBox="0 0 10 10"
+const markers = prefix => ARROW_VARIANTS.map(([name, fill]) => `<marker id="${prefix}-arrow-${name}" viewBox="0 0 10 10"
       refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="${fill}" />
     </marker>`).join('');
@@ -178,9 +188,11 @@ function viewBoxFor(spec) {
 }
 
 /** Retorna o markup SVG completo (com legenda opcional) para um spec. */
+let graphInstance = 0;
 export function graphSvg(spec) {
   if (!spec || !Array.isArray(spec.nodes) || spec.nodes.length === 0) return '';
-  const edges = (spec.edges || []).map(edge => drawEdge(spec, edge)).filter(Boolean).join('\n    ');
+  const prefix = `gd-${++graphInstance}`;
+  const edges = (spec.edges || []).map(edge => drawEdge(spec, edge, prefix)).filter(Boolean).join('\n    ');
   const nodes = spec.nodes.map(drawNode).join('\n    ');
   const caption = spec.caption
     ? `<figcaption class="gd-caption">${escapeXml(spec.caption)}</figcaption>`
@@ -189,7 +201,7 @@ export function graphSvg(spec) {
   return `<figure class="graph-figure">
     <svg class="graph-draw" viewBox="${viewBoxFor(spec)}" role="img"
       aria-label="${escapeXml(spec.alt || spec.caption || 'Diagrama de grafo')}" preserveAspectRatio="xMidYMid meet">
-      <defs>${markers()}</defs>
+      <defs>${markers(prefix)}</defs>
       ${edges}
       ${nodes}
     </svg>

@@ -4,6 +4,14 @@ import test from 'node:test';
 import { CONFIG } from '../public/presentation.config.js';
 import { graphSvg, nodeShape } from '../public/assets/graph-draw.js';
 
+test('setas referenciam marcadores únicos, mesmo com outros slides ocultos',()=>{
+  const spec={directed:true,nodes:[{id:'A',x:100,y:100},{id:'B',x:300,y:100}],edges:[{from:'A',to:'B'}]};
+  const a=graphSvg(spec), b=graphSvg(spec);
+  const ids=Array.from((a+b).matchAll(/<marker id="([^"]+)"/g),m=>m[1]);
+  assert.equal(new Set(ids).size,ids.length);
+  for(const html of [a,b]) for(const ref of html.matchAll(/marker-end="url\(#([^)]+)\)"/g))assert.ok(html.includes(`id="${ref[1]}"`));
+});
+
 /** Todos os specs de grafo declarados no deck, com o número do slide. */
 const diagramas = CONFIG.slides
   .map((slide, index) => ({ slide: index + 1, titulo: slide.title || slide.question, spec: slide.graph }))

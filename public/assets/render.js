@@ -51,6 +51,10 @@ const noteOf = slide => {
 
 const graphOf = slide => slide.graph ? graphSvg(slide.graph) : '';
 
+// Links declarados no conteúdo: protocolo restrito, texto sempre escapado.
+const safeHref = value => /^(https?:\/\/|\/(?!\/))/.test(String(value)) ? escapeHtml(value) : '#';
+const linksOf = slide => slide.links?.length ? `<nav class="source-links" aria-label="Material de estudo">${slide.links.map(l=>`<a href="${safeHref(l.href)}" target="_blank" rel="noopener">${text(l.label)} ↗</a>`).join('')}</nav>` : '';
+
 /**
  * As fórmulas formam UM bloco monoespaçado, não uma caixa por linha.
  *
@@ -70,17 +74,26 @@ const formulasOf = slide => {
   return `<pre class="formula"><code>${linhas.map(linha => text(linha)).join('\n')}</code></pre>`;
 };
 
-function coverSlide(slide, participantUrl) {
+/**
+ * Capa enxuta: título, integrantes, QR e contagem de conectados.
+ *
+ * O endereço em texto foi retirado de propósito — quem está na sala lê o QR,
+ * e o link escrito só competia com o título.
+ */
+function coverSlide(slide) {
+  const nomes = Array.isArray(slide.names) && slide.names.length
+    ? `<p class="cover-names">${slide.names.map(nome => text(nome)).join(' · ')}</p>`
+    : '';
   return `<div class="slide-content cover-layout">
       <div>
         ${eyebrowOf(slide)}
         <h1 class="slide-title">${text(slide.title)} <span class="highlight">${text(slide.highlight || '')}</span></h1>
+        ${nomes}
         ${descriptionOf(slide)}
       </div>
       <div>
-        <div class="qr-card">
+        <div class="qr-card qr-card--limpo">
           <canvas class="cover-qr" aria-hidden="true"></canvas>
-          <a href="${escapeHtml(participantUrl)}" target="_blank" rel="noopener">${escapeHtml(participantUrl)}</a>
         </div>
         <p class="live-count"><strong data-connected>0</strong> pessoas conectadas</p>
       </div>
@@ -267,6 +280,7 @@ const LETRAS = 'ABCDE';
  * reencontrar as alternativas quando o gabarito aparece.
  */
 function questionSlide(slide) {
+  if (slide.original && !slide.reveal) return originalQuestionSlide(slide);
   const revelado = Boolean(slide.reveal);
   const alternativas = slide.alternatives || [];
   const correta = String(slide.answer || '').toLowerCase();
@@ -313,6 +327,20 @@ function questionSlide(slide) {
       </div>
       ${diagrama ? `<div class="question-visual">${diagrama}</div>` : ''}
     </div>`;
+}
+
+function originalQuestionSlide(slide) {
+  const images = slide.images || [];
+  return `<div class="slide-content original-layout">
+    <header class="original-head"><p class="question-source">${text(slide.source)}</p><p class="exam-time">3 minutos · leia, calcule e vote</p></header>
+    <div class="exam-pages${images.length > 1 ? ' exam-pages--two' : ''}">${images.map((name,i)=>`<span class="exam-image"><img src="/provas/recortes/${escapeHtml(name)}.png" alt="${escapeHtml(slide.source)} — ${escapeHtml(slide.question)}${images.length>1?` — parte ${i+1}`:''}" loading="lazy"></span>`).join('')}</div>
+    <footer class="exam-footer"><div class="exam-votes" data-poll-alternatives="${escapeHtml(slide.poll)}">${slide.alternatives.map(a=>`<span class="alt"><b>${escapeHtml(a.id.toUpperCase())}</b><span class="alt-pct" data-alt-pct="${escapeHtml(a.id)}">—</span></span>`).join('')}</div><p data-poll-summary="${escapeHtml(slide.poll)}">Aguardando respostas…</p></footer>
+    <details class="exam-transcript"><summary>Resumo textual acessível e alternativas</summary><p>${text(slide.statement)}</p><p>${text(slide.question)}</p><ol>${slide.alternatives.map(a=>`<li>${text(a.text)}</li>`).join('')}</ol></details>
+  </div>`;
+}
+
+function articleSlide(slide) {
+  return `<div class="slide-content article-layout"><aside class="article-date"><p class="eyebrow">${text(slide.period)}</p><span>${text(slide.year)}</span><p class="article-paper">${text(slide.paper)}</p><p class="article-authors">${text(slide.authors)}</p><a href="${safeHref(slide.href)}" target="_blank" rel="noopener">Ler artigo ↗</a></aside><div>${titleOf(slide,'concept-title')}${pointsOf(slide)}<p class="article-connection">${text(slide.connection)}</p><p class="article-limit"><strong>Limite da evidência.</strong> ${text(slide.limit)}</p></div></div>`;
 }
 
 /** Pergunta com resposta escondida: o <details> abre no clique ou no Enter. */
@@ -363,10 +391,12 @@ function statementSlide(slide) {
       ${descriptionOf(slide)}
       ${pointsOf(slide)}
       ${noteOf(slide)}
+      ${linksOf(slide)}
     </div>`;
 }
 
 const RENDERERS = {
+  article: articleSlide,
   question: questionSlide,
   trace: traceSlide,
   section: sectionSlide,

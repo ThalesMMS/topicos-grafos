@@ -6,7 +6,7 @@ import { slideMarkup } from '../public/assets/render.js';
 
 const KNOWN_TYPES = new Set([
   'cover', 'section', 'statement', 'concept', 'graph', 'definition', 'question', 'trace',
-  'table', 'code', 'compare', 'steps', 'exercise', 'list', 'quote', 'poll', 'closing'
+  'table', 'code', 'compare', 'steps', 'exercise', 'list', 'quote', 'poll', 'closing', 'article'
 ]);
 
 test('todo slide declara um tipo conhecido', () => {

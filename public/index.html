@@ -7,6 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/revisao.css">
+  <link rel="stylesheet" href="/assets/seminario.css">
 </head>
 <body class="presenter">
   <a class="skip-link" href="#deck">Ir para os slides</a>
@@ -71,7 +72,7 @@
     const renderOptions = { polls: CONFIG.polls, participantUrl };
 
     deck.innerHTML = CONFIG.slides.map((slide, index) => (
-      `<section class="slide" data-index="${index}" data-activity="${escapeHtml(activityForSlide(slide))}" aria-hidden="true">${slideMarkup(slide, renderOptions)}</section>`
+      `<section class="slide" data-index="${index}" data-kind="${escapeHtml(slide.original && !slide.reveal ? 'original' : slide.type)}" data-activity="${escapeHtml(activityForSlide(slide))}" aria-hidden="true"><span class="slide-owner" aria-label="Parte ${slide.parte}">${slide.parte}</span>${slideMarkup(slide, renderOptions)}</section>`
     )).join('');
 
     const slides = [...document.querySelectorAll('.slide')];
@@ -199,7 +200,9 @@
       paceClock.textContent = clockText(elapsedSeconds);
 
       if (startedAt === null && elapsedMs === 0) {
-        paceDelta.textContent = `pronto · ${expectedMinutes.total} min`;
+        // Arredonda: somar durações fracionárias (0,4 min por slide de passo)
+        // produz 140.4000000000001, e isso não pode chegar ao telão.
+        paceDelta.textContent = `pronto · ${Math.round(expectedMinutes.total)} min`;
         paceButton.dataset.state = 'idle';
         return;
       }

@@ -540,7 +540,7 @@ export function tracoColoracao({ base, ordem, eyebrow = 'Guloso' }) {
   slides[slides.length - 1].note = {
     kind: 'check',
     title: `O guloso usou ${total} cores`,
-    text: `Isso é um LIMITE SUPERIOR para χ, não o valor. Confira as arestas uma a uma: nenhuma pode ter as duas pontas da mesma cor.`
+    text: `Isso é um LIMITE SUPERIOR para χ, não o valor. A verificação é aresta a aresta: nenhuma pode ter as duas pontas da mesma cor.`
   };
 
   return slides;

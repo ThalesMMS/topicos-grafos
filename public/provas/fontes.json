@@ -1,0 +1,93 @@
+[
+  {
+    "file": "enade-2011-computacao-prova.pdf",
+    "url": "https://download.inep.gov.br/educacao_superior/enade/provas/2011/COMPUTACAO.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 1886812,
+    "sha256": "eb3b497f0d0967b1b6d063784c3012e719d1758ba182e4f6d6e6e47151934548"
+  },
+  {
+    "file": "enade-2021-computacao-prova.pdf",
+    "url": "https://download.inep.gov.br/enade/provas_e_gabaritos/2021_PV_bacharelado_ciencia_computacao.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 8169650,
+    "sha256": "0254b274cc4adddbb503cf18553ee70c26014cbb0848fe3c5b787c80137b11e8"
+  },
+  {
+    "file": "enade-2021-computacao-gabarito.pdf",
+    "url": "https://download.inep.gov.br/enade/provas_e_gabaritos/2021_GB_bacharelado_ciencia_computacao.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 509018,
+    "sha256": "62e5d3812e9b639a2590dad07c30f32d96367ed0d0e6450f0b0a753e023f475b"
+  },
+  {
+    "file": "enade-2023-engenharia-prova.pdf",
+    "url": "https://download.inep.gov.br/enade/provas_e_gabaritos/2023_PV_engenharia_da_computacao.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 10268386,
+    "sha256": "e9939d226a450fb55b09cc4caa7c1e44bb7f22933769bda5c0902ee8aa0021b4"
+  },
+  {
+    "file": "enade-2023-engenharia-gabarito.pdf",
+    "url": "https://download.inep.gov.br/enade/provas_e_gabaritos/2023_GB_engenharia_da_computacao.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 181724,
+    "sha256": "617675ef9276c7fd20c8b0285c679b766ef7ba5bd062d359917967b9a66ffd6e"
+  },
+  {
+    "file": "poscomp-2019-prova.pdf",
+    "url": "https://www.sbc.org.br/wp-content/uploads/2024/07/Prova2019.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 1499536,
+    "sha256": "d6bac0dc899d43d673f94f72d6e798223077a8c216eb197c92eecc4dd842e42d"
+  },
+  {
+    "file": "poscomp-2019-gabarito.pdf",
+    "url": "https://raw.githubusercontent.com/amimaro/Provas-POSCOMP/master/2019/gabarito-2019.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 75894,
+    "sha256": "b41f9bfbb4e73da3876c81261c627e5f818fba60645e6d9d9899da928e2e6a9c"
+  },
+  {
+    "file": "poscomp-2012-prova.pdf",
+    "url": "https://www.sbc.org.br/wp-content/uploads/2024/07/cadernodequestoes-ano2012.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 753904,
+    "sha256": "9b878ca02cc1ebfc271b88d0ae813cfd2cb0c136bc55c2c89e8fff65aba5f875"
+  },
+  {
+    "file": "poscomp-2014-prova.pdf",
+    "url": "https://www.sbc.org.br/wp-content/uploads/2024/07/cadernodequestoes-ano2014.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 3016279,
+    "sha256": "e53238faf0331cb2379027c392ba43fbca77e8b93e466ff57b333ddb6e72b615"
+  },
+  {
+    "file": "poscomp-2012-gabarito-provisorio.pdf",
+    "url": "https://www.sbc.org.br/wp-content/uploads/2024/07/Gabarito-2012.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 133546,
+    "sha256": "71ebbb1b1ccf08c5e0d62428eb98f769b0874dbab379716f450d1e7fe38413b1"
+  },
+  {
+    "file": "poscomp-2014-gabarito-definitivo.pdf",
+    "url": "https://www.sbc.org.br/wp-content/uploads/2024/07/Gabarito.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 137616,
+    "sha256": "557721e2272ddaddf38f766b5f7b9d73baa0262bfb14cd2ee3f945ebb12868dd"
+  },
+  {
+    "file": "poscomp-2012-prova-sem-marcacoes.pdf",
+    "url": "https://raw.githubusercontent.com/amimaro/Provas-POSCOMP/master/2012/caderno_2012.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 1794607,
+    "sha256": "a59a2be18a246864142ff76ba85d9c5733c7c3b959bca4a91175bc25ec29e0d0"
+  },
+  {
+    "file": "poscomp-2014-prova-sem-marcacoes.pdf",
+    "url": "https://raw.githubusercontent.com/amimaro/Provas-POSCOMP/master/2014/caderno_2014.pdf",
+    "downloaded": "2026-09-06",
+    "bytes": 9638841,
+    "sha256": "7841fd284c61e8354a86b0738b140b93285508a592525b86b6e1688e571ff776"
+  }
+]

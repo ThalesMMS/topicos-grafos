@@ -1,4 +1,15 @@
-# Presentation Template
+# Grafos, rotas e algoritmos
+
+Seminário revisado: **43 slides, 88 minutos, quatro integrantes**. Cinco questões
+originais (três ENADE e duas POSCOMP), resoluções com grafos em estilo manuscrito,
+tópico adicional A*, três artigos de 2013/2019/2025 (incluindo logística) e roda final.
+
+- [Roteiro de ensaio e fontes](docs/ROTEIRO_SEMINARIO.md).
+- [Acervo local de provas e gabaritos](public/provas/index.html): 13 PDFs completos e seis recortes.
+- Conteúdo ativo: `public/slides/seminario/`. Os módulos anteriores são acervo e não entram na apresentação.
+- Para reproduzir recortes: `python scripts/recortar-provas.py` com PyMuPDF instalado.
+
+## Aplicação
 
 Esqueleto reutilizável de apresentação HTML com três superfícies sincronizadas em tempo real:
 

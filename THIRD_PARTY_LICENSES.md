@@ -9,3 +9,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# Fonte manuscrita Kalam
+
+`public/assets/fonts/Kalam-Regular.ttf`: Kalam, distribuída pelo projeto Google Fonts
+sob SIL Open Font License 1.1. Texto integral em `public/assets/fonts/OFL.txt`.
+Origem: https://github.com/google/fonts/tree/main/ofl/kalam.
+
+Os PDFs em `public/provas` são documentos de provas de suas respectivas instituições.
+Não são cobertos pela licença dos componentes de software. A origem de cada arquivo
+está registrada em `public/provas/fontes.json`.

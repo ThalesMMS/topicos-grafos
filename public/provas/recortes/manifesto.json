@@ -1,0 +1,74 @@
+[
+  {
+    "image": "enade-2021-q34.png",
+    "pdf": "enade-2021-computacao-prova.pdf",
+    "page": 43,
+    "crop": [
+      25,
+      73,
+      542,
+      478
+    ],
+    "dpi": 216
+  },
+  {
+    "image": "enade-2023-q11.png",
+    "pdf": "enade-2023-engenharia-prova.pdf",
+    "page": 15,
+    "crop": [
+      25,
+      73,
+      542,
+      525
+    ],
+    "dpi": 216
+  },
+  {
+    "image": "enade-2023-q32-grafo.png",
+    "pdf": "enade-2023-engenharia-prova.pdf",
+    "page": 34,
+    "crop": [
+      25,
+      398,
+      542,
+      725
+    ],
+    "dpi": 216
+  },
+  {
+    "image": "enade-2023-q32-alternativas.png",
+    "pdf": "enade-2023-engenharia-prova.pdf",
+    "page": 35,
+    "crop": [
+      25,
+      76,
+      542,
+      201
+    ],
+    "dpi": 216
+  },
+  {
+    "image": "poscomp-2012-q35.png",
+    "pdf": "poscomp-2012-prova-sem-marcacoes.pdf",
+    "page": 14,
+    "crop": [
+      65,
+      443,
+      550,
+      732
+    ],
+    "dpi": 216
+  },
+  {
+    "image": "poscomp-2014-q37.png",
+    "pdf": "poscomp-2014-prova-sem-marcacoes.pdf",
+    "page": 12,
+    "crop": [
+      65,
+      637,
+      540,
+      730
+    ],
+    "dpi": 216
+  }
+]

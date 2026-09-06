@@ -1,30 +1,34 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync, readFileSync } from 'node:fs';
 import { CONFIG } from '../public/presentation.config.js';
-import { fundamentos as f } from '../public/slides/01-fundamentos.js';
-import { relacoes as r } from '../public/slides/02-relacoes.js';
-import { caminhos as c } from '../public/slides/04-caminhos.js';
+import { QUESTOES } from '../public/slides/seminario/questoes.js';
 import { activityForSlide } from '../public/assets/activity.js';
-test('todas as cinco questões ENADE permanecem ativas, com alternativas, figura e resolução',()=>{
- const original=[...f,...r,...c].filter(s=>s.type==='question'&&!s.reveal);
- assert.equal(original.length,5);
- for(const q of original){
-  const pair=CONFIG.slides.filter(s=>s.poll===q.poll);
-  assert.equal(pair.length,2,q.poll);
-  const [vote,answer]=pair;
-  assert.equal(vote.statement,q.statement);
-  assert.deepEqual(vote.graph,q.graph);
-  assert.deepEqual(vote.claims,q.claims);
-  assert.deepEqual(vote.alternatives,q.alternatives);
-  assert.deepEqual(answer.alternatives,q.alternatives);
-  assert.equal(answer.answer,q.answer);
-  assert.equal(activityForSlide(vote),`poll:${q.poll}`);
-  assert.equal(activityForSlide(answer),'stage');
-  assert.deepEqual(CONFIG.polls[q.poll].options.map(o=>o.id),q.alternatives.map(a=>a.id));
- }
-});
-test('algoritmos complementares recebem explicação no roteiro ativo',()=>{
- for(const name of ['Bellman','Floyd','A*','Kosaraju','Welsh','Dinic','Edmonds','Húngaro','Bondy']){
-  assert.ok(CONFIG.slides.some(s=>JSON.stringify(s).includes(name)),name);
- }
+import { slideMarkup } from '../public/assets/render.js';
+test('cinco questões originais: PDF local, recortes e votação sem resposta exposta',()=>{
+  assert.equal(QUESTOES.length,5);
+  assert.equal(QUESTOES.filter(q=>q.source.startsWith('POSCOMP')).length,2);
+  const manifest=JSON.parse(readFileSync(new URL('../public/provas/recortes/manifesto.json',import.meta.url)));
+  for(const q of QUESTOES){
+    const pair=CONFIG.slides.filter(s=>s.poll===q.id);
+    assert.equal(pair.length,2);
+    const [vote,answer]=pair;
+    assert.equal(activityForSlide(vote),`poll:${q.id}`);
+    assert.equal(activityForSlide(answer),'stage');
+    // O orçamento vive em slides/seminario/index.js; aqui basta garantir que
+    // a votação tem mais tempo que o gabarito e não é um slide relâmpago.
+    // O orçamento vive em slides/seminario/index.js. Aqui só garantimos que a
+    // votação tem tempo real de leitura e dura mais que o gabarito.
+    assert.ok(vote.minutes >= 2, `votação com apenas ${vote.minutes} min`);
+    assert.ok(vote.minutes > answer.minutes, 'votação deveria durar mais que o gabarito');
+    assert.deepEqual(answer.alternatives,vote.alternatives);
+    assert.ok(existsSync(new URL(`../public/provas/${q.pdf}`,import.meta.url)));
+    for(const image of q.images){
+      assert.ok(existsSync(new URL(`../public/provas/recortes/${image}.png`,import.meta.url)));
+      assert.equal(manifest.find(m=>m.image===image+'.png').pdf,q.pdf);
+    }
+    const html=slideMarkup(vote);
+    assert.match(html,/<img/);assert.doesNotMatch(html,/alt--correta|answer-panel|Resolução comentada/);
+    assert.deepEqual(CONFIG.polls[q.id].options.map(a=>a.label),q.alternatives.map(a=>`${a.id.toUpperCase()}) ${a.text}`));
+  }
 });

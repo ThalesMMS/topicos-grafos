@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { CONFIG } from '../public/presentation.config.js';
-import { MODULOS, DURACAO_ESTIMADA } from '../public/slides/equilibrada/index.js';
+// Regressões do acervo curricular preservado, fora do seminário projetado.
+import { MODULOS, DURACAO_ESTIMADA, slides, polls } from '../public/slides/equilibrada/index.js';
+const CONFIG = { slides, polls };
 import { QUESTOES, pergunta, resposta } from '../public/slides/equilibrada/perguntas.js';
 import { activityForSlide } from '../public/assets/activity.js';
 import { slideMarkup } from '../public/assets/render.js';
@@ -31,12 +32,12 @@ function assertViable(g,flows,value){
   for(const [v,balance]of Object.entries(net))assert.equal(balance,v==='S'?value:v==='T'?-value:0,`conservação em ${v}`);
 }
 
-test('roteiro principal tem IDs únicos e mantém abertura/fechamento',()=>{
+test('acervo curricular: roteiro tem IDs únicos e mantém abertura/fechamento',()=>{
   const ids=CONFIG.slides.map(s=>s.id); assert.equal(new Set(ids).size,ids.length);
   assert.equal(CONFIG.slides[0].type,'cover'); assert.equal(CONFIG.slides.at(-1).type,'closing');
   assert.ok(CONFIG.slides.length<=85,'não inflar o roteiro com apêndices inteiros');
 });
-test('oito módulos e orçamento explícito para uma revisão de 85 minutos',()=>{
+test('acervo curricular: oito módulos e orçamento explícito para uma revisão de 85 minutos',()=>{
   assert.equal(MODULOS.length,8);assert.equal(DURACAO_ESTIMADA,85);
   const total=CONFIG.slides.reduce((sum,s)=>sum+(s.minutes||0),0);
   assert.equal(total,DURACAO_ESTIMADA);
@@ -45,11 +46,11 @@ test('oito módulos e orçamento explícito para uma revisão de 85 minutos',()=
   assert.ok(MODULOS.find(m=>m.id==='conectividade').minutes>=13);
   for(const m of MODULOS)assert.equal(m.slides.filter(s=>s.type==='section').length,1);
 });
-test('cobertura essencial está no deck carregado, não apenas no apêndice',()=>{
+test('acervo curricular mantém sua cobertura essencial',()=>{
   const tags=new Set(CONFIG.slides.flatMap(s=>s.cobertura||[]));
   for(const topic of ['modelagem','grau','familias','isomorfismo','subgrafo','matriz-incidencia','matriz-adjacencia','lista-adjacencia','componentes','distancia','excentricidade','raio','diametro','ponte','articulacao','bfs','dfs','agm','prim','kruskal','dijkstra','fecho-direto','fecho-inverso','cfc','ordenacao-topologica','euler','hamilton','planaridade','faces','formula-euler','coloracao','rede-residual','ford-fulkerson','fluxo-maximo-corte-minimo'])assert.ok(tags.has(topic),topic);
 });
-test('cinco atividades em cinco domínios; alternativas sincronizadas e solução fora da votação',()=>{
+test('acervo curricular: cinco atividades em cinco domínios; alternativas sincronizadas e solução fora da votação',()=>{
   assert.equal(QUESTOES.length,5);assert.equal(new Set(QUESTOES.map(q=>q.module)).size,5);
   assert.equal(Object.keys(CONFIG.polls).length,10);
   for(const q of QUESTOES){
