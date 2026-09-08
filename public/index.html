@@ -148,6 +148,7 @@
       cornerQr.classList.toggle('is-visible', activity.startsWith('poll:'));
       if (updateHash) history.replaceState(null, '', `#/${nextIndex + 1}`);
       if (isController) connection.sendVital('activity', { type: 'activity', activity });
+      if (typeof reportarPosicao === 'function') reportarPosicao();
       // O cronômetro começa sozinho quando você sai da capa.
       if (typeof startPaceOnFirstAdvance === 'function') startPaceOnFirstAdvance(nextIndex);
     }
@@ -275,9 +276,25 @@
         isController = Boolean(message.authorized);
         if (isController && currentIndex >= 0) {
           connection.sendVital('activity', { type: 'activity', activity: slides[currentIndex].dataset.activity });
+          reportarPosicao();
         }
+      },
+      // Comando vindo do celular. O telão é quem manda na navegação local;
+      // aqui ele só reage, e a posição volta pelo reportarPosicao() do goTo.
+      onSlide: message => {
+        if (message.action === 'next') goTo(currentIndex + 1);
+        else if (message.action === 'previous') goTo(currentIndex - 1);
+        else if (message.action === 'first') goTo(0);
+        else if (message.action === 'last') goTo(slides.length - 1);
       }
     });
+
+    /** Informa à régie em que slide o telão está. */
+    function reportarPosicao() {
+      if (!isController || currentIndex < 0) return;
+      const titulo = slides[currentIndex].querySelector('h1')?.textContent?.trim() || '';
+      connection.send({ type: 'slide_at', index: currentIndex, total: slides.length, title: titulo });
+    }
 
     goTo(indexFromHash(), { updateHash: false });
     renderPollResults();

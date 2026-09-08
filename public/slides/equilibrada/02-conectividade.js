@@ -43,7 +43,7 @@ export const slides = [
     "note": {
       "kind": "key",
       "title": "Distância",
-      "text": "Comprimento é número de arestas. Distância é o MENOR comprimento entre dois vértices; um passeio qualquer não prova minimalidade."
+      "text": "No grafo sem pesos, a distância é o menor número de arestas entre dois vértices. Nos exemplos ponderados de caminhos mínimos, a distância será a menor soma dos pesos."
     },
     "cobertura": [
       "passeio",

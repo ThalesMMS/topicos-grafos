@@ -11,6 +11,7 @@ test('seminário tem quatro partes, duração coerente e ids únicos',()=>{
   assert.equal(MODULOS.length,4);
   // A duração declarada é a soma real dos slides — não um número escolhido à mão.
   assert.equal(CONFIG.estimatedMinutes,MODULOS.reduce((t,m)=>t+m.minutes,0));
+  assert.equal(CONFIG.estimatedMinutes,80);
   assert.ok(MODULOS.every(m=>m.minutes>0&&m.slides.length>0));
   assert.equal(new Set(CONFIG.slides.map(s=>s.id)).size,CONFIG.slides.length);
   assert.equal(CONFIG.slides[0].type,'cover');
@@ -33,11 +34,18 @@ test('nada no deck menciona "Integrante"',()=>{
   }
 });
 
-test('a questão original mostra só enunciado e votos, sem links',()=>{
-  const original=CONFIG.slides.find(s=>s.original&&!s.reveal);
-  const markup=slideMarkup(original,{polls:CONFIG.polls});
-  assert.ok(markup.includes('data-alt-pct'),'a questão perdeu as porcentagens');
-  assert.ok(!markup.includes('<a '),'a questão ainda tem link; deve ficar só a imagem e a %');
+test('a questão mostra só o recorte, as alternativas e os votos',()=>{
+  for(const original of CONFIG.slides.filter(s=>s.original&&!s.reveal)){
+    const markup=slideMarkup(original,{polls:CONFIG.polls});
+    assert.ok(markup.includes('<img'),`${original.id}: perdeu o recorte da prova`);
+    assert.ok(markup.includes('data-alt-pct'),`${original.id}: perdeu as porcentagens`);
+    assert.ok(!markup.includes('<a '),`${original.id}: tem link, deve ficar só imagem e %`);
+    assert.ok(!markup.includes('<details'),`${original.id}: ainda tem o resumo dobrável`);
+    assert.ok(!/\d+ minutos?/.test(markup),`${original.id}: ainda instrui o tempo de leitura`);
+    // O enunciado some da TELA, não da árvore de acessibilidade: sem ele, a
+    // questão viraria uma imagem sem alternativa textual.
+    assert.ok(markup.includes('apenas-leitor-de-tela'),`${original.id}: sem texto para leitor de tela`);
+  }
 });
 
 test('cada artigo é de uma aplicação DIFERENTE, sem repetir domínio',()=>{
@@ -75,7 +83,7 @@ test('o conteúdo de algoritmos restaurado chegou ao deck',()=>{
   const titulos=CONFIG.slides.map(s=>s.title||'').join(' | ');
   // Cada um destes sumiu quando os módulos deixaram de ser importados.
   for(const esperado of ['Árvore: conexa e acíclica','A aresta mais leve de um corte é segura',
-    'Condição suficiente não é condição necessária','Capacidade e conservação',
+    'O critério de Dirac garante um ciclo hamiltoniano','Capacidade e conservação',
     'Colorir é separar vértices em conjuntos independentes'])
     assert.ok(titulos.includes(esperado),`conteúdo de algoritmos ausente: "${esperado}"`);
 });
@@ -89,7 +97,7 @@ test('o algoritmo é apresentado ANTES da questão que o cobra',()=>{
     ['enade_dijkstra-pergunta', ['dijkstra-invariante', 'p-dijkstra-1']],
     ['enade_ospf-pergunta',     ['ospf-modelo', 'p-dijkstra-1']],
     ['poscomp_floyd-pergunta',  ['floyd-regra', 'floyd-quadro']],
-    ['poscomp_familias-pergunta',['p-kruskal-1', 'p-prim-1', 'p-bfs-1']],
+    ['poscomp_familias-pergunta',['p-kruskal-1', 'p-prim-1', 'topologica', 'kosaraju', 'fila-nao-e-bfs']],
     ['enade_gulosa-pergunta',   ['heuristicas-prioridade']]
   ];
   for (const [questao, prerequisitos] of exigencias) {
@@ -110,11 +118,12 @@ test('o slide de abertura não cita algoritmo que ainda não foi apresentado',()
     assert.ok(!texto.includes(nome), `o slide de modelagem cita "${nome}" antes de apresentá-lo`);
 });
 
-test('todo algoritmo apresentado é executado passo a passo',()=>{
-  // A regra do seminário: quem entra, roda na frente da turma.
+test('as execuções completas têm um slide por mudança de estado',()=>{
+  // Estes são os algoritmos apresentados como execução completa. Floyd,
+  // Kosaraju e Fleury aparecem explicitamente como exemplos delimitados.
   const passos=CONFIG.slides.filter(s=>/^p-/.test(s.id));
   const familias=new Set(passos.map(s=>/^p-([a-z]+)-/.exec(s.id)[1]));
-  for(const algoritmo of ['bfs','dfs','dijkstra','bellman','kruskal','prim','kahn','cores'])
+  for(const algoritmo of ['bfs','dfs','dijkstra','bellman','kruskal','prim','kahn','fluxo','cores'])
     assert.ok(familias.has(algoritmo),`sem passo a passo: ${algoritmo}`);
   // Cada passo declara sua posição, para a turma saber onde está.
   for(const passo of passos) assert.match(passo.eyebrow,/passo \d+\/\d+/);
@@ -122,7 +131,7 @@ test('todo algoritmo apresentado é executado passo a passo',()=>{
 
 test('nenhum trace-resumo sobreviveu ao passo a passo que o substituiu',()=>{
   const ids=new Set(CONFIG.slides.map(s=>s.id));
-  for(const superado of ['bfs-quadro','alg-dfs-execucao','kruskal-quadro','prim-quadro','alg-guloso-cores'])
+  for(const superado of ['bfs-quadro','alg-dfs-execucao','kruskal-quadro','prim-quadro','alg-ford-fulkerson','alg-guloso-cores'])
     assert.ok(!ids.has(superado),`"${superado}" repete o que o passo a passo já mostra`);
 });
 test('Q34 conserva todos os arcos da prova e E=5 na primeira extração',()=>{

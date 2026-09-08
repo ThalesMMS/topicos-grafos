@@ -22,17 +22,10 @@ import { slides as fluxo } from '../equilibrada/08-fluxo.js';
 /**
  * Quanto conteúdo de algoritmos entra no seminário.
  *
- * O slot original era de 88 minutos. Restaurar o que havia sido tirado não
- * cabe nele — os três níveis abaixo foram MEDIDOS, não estimados:
- *
- *   'completo'  → 67 slides, 126,5 min. Todos os algoritmos.
- *   'essencial' → 59 slides, 114,5 min. Sem fluxo máximo, sem famílias/matrizes.
- *   'minimo'    → 51 slides, 103,5 min. Só o que sustenta as questões da prova.
- *
- * Nem o 'minimo' cabe em 88: o próprio seminário sem nenhum acréscimo já ocupa
- * 92 min com os três artigos novos. Para 88, é preciso cortar conteúdo-base —
- * decisão de quem apresenta, não do código. Trocar esta constante é a única
- * edição necessária para mudar de nível.
+ * A versão ativa usa 'completo'. A quantidade final de slides e o orçamento
+ * são calculados em index.js, após inserir os passos e filtrar os resumos.
+ * Mudar a seleção exige revisar também os alvos de inserir() em index.js:
+ * alguns alvos pertencem aos grupos opcionais.
  */
 export const SELECAO = 'completo';
 
@@ -103,9 +96,9 @@ export const alcance = seLigado('alcance', pegar(digrafos, [
 
 /** Euler e Hamilton — sumiram inteiros do seminário. Entra no bloco 3. */
 export const eulerHamilton = seLigado('euler', pegar(percursos, [
-  ['Perguntas semelhantes, garantias distintas', 1.5],
-  ['Construir sem abandonar arestas', 2],
-  ['Condição suficiente não é condição necessária', 1.5]
+  ['Percursos de Euler e de Hamilton', 1.5],
+  ['Fleury evita pontes enquanto houver alternativa', 2],
+  ['O critério de Dirac garante um ciclo hamiltoniano', 1.5]
 ]));
 
 /** Coloração — sustenta o artigo do Chaitin. Entra no bloco 4. */

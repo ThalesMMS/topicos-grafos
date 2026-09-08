@@ -12,7 +12,7 @@ export const QUESTOES = [
   {
     id: 'enade_ospf', source: 'ENADE 2023 · Engenharia de Computação · Q11',
     question: 'Quais afirmações descrevem o OSPF da questão?',
-    statement: 'Use o enunciado original no telão: I trata de saltos; II, da cópia do grafo; III, de execução centralizada; IV, da troca de informações.',
+    statement: 'No modelo da prova, roteadores são vértices e atrasos são pesos. As afirmações tratam de saltos, cópia da base, local de execução e troca de informações.',
     images: ['enade-2023-q11'], pdf: 'enade-2023-engenharia-prova.pdf', page: 15,
     alternatives: alternatives(['I e III.','II e III.','II e IV.','I, II e IV.','I, III e IV.']),
     answer:'c', solution:'Cada origem calcula sua própria árvore de rotas',
@@ -33,7 +33,7 @@ export const QUESTOES = [
     statement:'I: topológica; II: Prim; III: Dijkstra; IV: CFC; V: Kruskal. A: DFS e transposto; B: ordenar arestas sem ciclos; C: DFS em DAG; D: menor aresta; E: menor distância acumulada.',
     images:['poscomp-2012-q35'],pdf:'poscomp-2012-prova-sem-marcacoes.pdf',page:14,
     alternatives:alternatives(['I-A, II-B, III-C, IV-D, V-E.','I-C, II-D, III-E, IV-A, V-B.','I-C, II-E, III-B, IV-A, V-D.','I-D, II-B, III-A, IV-C, V-E.','I-D, II-E, III-A, IV-B, V-C.']),
-    answer:'b',solution:'Reconheça o mecanismo, não só o nome',
+    answer:'b',solution:'Cada algoritmo tem uma regra de escolha',
     why:'I–C: DAG e ordem de término. II–D: menor aresta cruzando o corte. III–E: menor custo acumulado. IV–A: duas DFS e grafo transposto, como Kosaraju. V–B: arestas ordenadas e prevenção de ciclos. B também consta no gabarito provisório da SBC; o arquivo disponível está identificado como provisório.',
   },
   {
@@ -42,7 +42,7 @@ export const QUESTOES = [
     statement:'Manaus → São Paulo. Em cada cidade, escolha o vizinho com menor estimativa h até São Paulo. Consulte o grafo e a tabela originais.',
     images:['enade-2023-q32-grafo','enade-2023-q32-alternativas'],pdf:'enade-2023-engenharia-prova.pdf',page:34,
     alternatives:alternatives(['Manaus → Macapá → São Paulo','Manaus → Porto Velho → Cuiabá → Goiânia → São Paulo','Manaus → Porto Velho → Palmas → Goiânia → São Paulo','Manaus → Macapá → Belém → Palmas → Goiânia → São Paulo','Manaus → Macapá → Belém → Palmas → P. Velho → Cuiabá → Goiânia → São Paulo']),
-    answer:'b',solution:'A ligação existe; a regra gulosa escolhe outra rota',
+    answer:'b',solution:'A busca segue por Porto Velho, Cuiabá e Goiânia',
     why:'Porto Velho tem h=2464, menor que Macapá (2665). Depois, Cuiabá tem h=1326, menor que Palmas (1489). Seguem Goiânia (809) e São Paulo (0). A rota via Macapá existe, mas perde na primeira comparação. A tabela informa estimativas ao destino, não pesos dos trechos: não permite provar qual rota tem menor custo real.',
   },
 ];

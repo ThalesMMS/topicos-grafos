@@ -295,6 +295,22 @@ export class Room {
     }
   }
 
+  /**
+   * Envia uma mensagem efêmera para um público específico.
+   * @param {object} payload mensagem já pronta
+   * @param {'presenter'|'control'} destino quem deve receber
+   */
+  relay(payload, destino) {
+    const texto = JSON.stringify(payload);
+    for (const socket of this.state.getWebSockets()) {
+      try {
+        const attachment = socket.deserializeAttachment() || {};
+        const alvo = destino === 'control' ? attachment.control === true : attachment.role === destino;
+        if (alvo) socket.send(texto);
+      } catch { /* conexão encerrada durante o envio */ }
+    }
+  }
+
   broadcastMine(state) {
     for (const socket of this.state.getWebSockets()) {
       try {
@@ -393,6 +409,24 @@ export class Room {
         else if (message.action === 'delete') {
           state.questions = state.questions.filter(item => item.id !== message.id);
         } else return;
+      } else if (message.type === 'slide') {
+        // Navegação pelo celular: a régie manda, o telão obedece.
+        // Não altera o estado da sala — é um comando, não um dado. Por isso
+        // retorna antes do save/broadcast do fim do método.
+        const acoes = ['next', 'previous', 'first', 'last'];
+        if (!acoes.includes(message.action)) return;
+        this.relay({ type: 'slide', action: message.action }, 'presenter');
+        return;
+      } else if (message.type === 'slide_at') {
+        // Caminho inverso: o telão informa onde está, para o celular mostrar
+        // a posição. Só quem controla recebe.
+        this.relay({
+          type: 'slide_at',
+          index: Math.max(0, Math.trunc(Number(message.index) || 0)),
+          total: Math.max(0, Math.trunc(Number(message.total) || 0)),
+          title: cleanText(message.title, 120)
+        }, 'control');
+        return;
       } else if (message.type === 'reset_session') {
         const nextState = initialState();
         nextState.activity = state.activity;

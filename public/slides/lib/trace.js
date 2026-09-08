@@ -63,7 +63,7 @@ export function tracoDijkstra({ base, origem, eyebrow = 'Dijkstra' }) {
   const linhas = [];
 
   const tabela = () => ({
-    headers: ['vértice', 'd[v]', 'π[v]', 'estado'],
+    headers: ['vértice', 'd[v]', 'pai', 'estado'],
     rows: ids.map(id => [
       id,
       mostra(d.get(id)),
@@ -152,7 +152,7 @@ export function tracoBfs({ base, origem, eyebrow = 'BFS' }) {
   const slides = [];
 
   const tabela = () => ({
-    headers: ['vértice', 'nível', 'π[v]'],
+    headers: ['vértice', 'nível', 'pai'],
     rows: ids.map(id => [id, mostra(nivel.get(id)), pai.get(id) || '—'])
   });
 
@@ -261,7 +261,7 @@ export function tracoKruskal({ base, eyebrow = 'Kruskal' }) {
   slides.push({
     type: 'trace',
     eyebrow,
-    title: 'Ordene as arestas e comece com n árvores triviais',
+    title: 'Kruskal começa com cada vértice em um componente',
     description: `Cada vértice é o próprio componente. A ordem de exame é: **${ordenadas.map(a => `${a.from}–${a.to}(${a.peso})`).join(' · ')}**.`,
     graph: comEstados(base, { nodes: {}, edges: {}, caption: `componentes: ${componentes()}` }),
     ...tabela()
@@ -284,7 +284,7 @@ export function tracoKruskal({ base, eyebrow = 'Kruskal' }) {
       eyebrow,
       title: aceita
         ? `${aresta.from}–${aresta.to} (${aresta.peso}): aceita`
-        : `${aresta.from}–${aresta.to} (${aresta.peso}): RECUSADA`,
+        : `${aresta.from}–${aresta.to} (${aresta.peso}): recusada`,
       description: aceita
         ? `As pontas estavam em componentes diferentes, então a aresta une os dois. Custo acumulado: **${custo}**.`
         : `As pontas já estão no mesmo componente — aceitar fecharia um ciclo. \`find(${aresta.from})\` = \`find(${aresta.to})\`.`,
@@ -321,7 +321,7 @@ export function tracoDfs({ base, origem, eyebrow = 'DFS' }) {
   let relogio = 0;
 
   const tabela = () => ({
-    headers: ['v', 'd[v]', 'f[v]', 'π[v]'],
+    headers: ['v', 'descoberta', 'término', 'pai'],
     rows: ids.map(id => [id, d.has(id) ? String(d.get(id)) : '—', f.has(id) ? String(f.get(id)) : '—', pai.get(id) || '—'])
   });
 
@@ -378,7 +378,7 @@ export function tracoDfs({ base, origem, eyebrow = 'DFS' }) {
           cor.set(para, 'cinza');
           pilha.push({ v: para, i: 0 });
           registra(
-            `${topo.v} → ${para}: aresta de ÁRVORE`,
+            `${topo.v} → ${para}: aresta de árvore`,
             `${para} era branco, então ${topo.v} o descobre. d[${para}] = ${relogio}.`,
             `pilha: [${pilha.map(q => q.v).join(', ')}]`
           );
@@ -386,7 +386,7 @@ export function tracoDfs({ base, origem, eyebrow = 'DFS' }) {
           if (!classes.has(chave) && !classes.has(`${para}-${topo.v}`)) {
             classes.set(chave, 'retorno');
             registra(
-              `${topo.v} → ${para}: aresta de RETORNO`,
+              `${topo.v} → ${para}: aresta de retorno`,
               `${para} está **cinza** — ainda aberto na pilha. Isso fecha um ciclo: ${para} é ancestral de ${topo.v}.`,
               `pilha: [${pilha.map(q => q.v).join(', ')}]`
             );
@@ -442,8 +442,8 @@ export function tracoKahn({ base, eyebrow = 'Kahn' }) {
   slides.push({
     type: 'trace',
     eyebrow,
-    title: 'Calcule o grau de entrada de cada vértice',
-    description: `Quem tem grau de entrada **0** não depende de ninguém e já pode sair. Fila inicial: **${prontos.join(', ')}**.`,
+    title: 'Kahn começa pelos vértices de grau de entrada zero',
+    description: `No modelo de dependências, u→v significa que u vem antes de v. Grau de entrada **0** indica que o vértice está pronto. Em caso de empate, sai o menor rótulo.`,
     graph: comEstados(base, {
       nodes: estados(),
       notes: Object.fromEntries(ids.map(id => [id, `d⁻ = ${entrada.get(id)}`])),
@@ -471,11 +471,11 @@ export function tracoKahn({ base, eyebrow = 'Kahn' }) {
       eyebrow,
       title: `Extrai ${atual}`,
       description: decrementados.length
-        ? `Decrementa o grau de entrada de **${decrementados.join(', ')}**.`
+        ? `Remove ${atual} e seus arcos de saída. O grau de entrada diminui em **${decrementados.join(', ')}**.`
           + (liberados.length
             ? ` Chegou a 0 em **${liberados.join(', ')}** — esses entram na fila.`
-            : ' Nenhum chegou a 0: **decrementar não é liberar**.')
-        : `${atual} não tem arcos de saída: nada muda.`,
+            : ' Esses vértices ainda têm predecessores pendentes.')
+        : `${atual} entra na ordem. Como não tem arcos de saída, nenhum outro grau muda.`,
       graph: comEstados(base, {
         nodes: { ...estados(), [atual]: 'done' },
         notes: Object.fromEntries(ids.map(id => [id, `d⁻ = ${entrada.get(id)}`])),
@@ -483,7 +483,7 @@ export function tracoKahn({ base, eyebrow = 'Kahn' }) {
       }),
       ...tabela(),
       note: ordem.length === ids.length
-        ? { kind: 'key', title: 'Ordem completa', text: `${ordem.join(' → ')}. Emitiu todos os ${ids.length} vértices, logo o dígrafo é acíclico. Se tivesse parado antes, os restantes estariam num ciclo.` }
+        ? { kind: 'key', title: 'Ordem completa', text: `${ordem.join(' → ')}. Todos os ${ids.length} vértices entraram na ordem. Se a fila esvaziasse antes disso, haveria um ciclo bloqueando os vértices restantes.` }
         : undefined
     });
   }
@@ -540,7 +540,7 @@ export function tracoColoracao({ base, ordem, eyebrow = 'Guloso' }) {
   slides[slides.length - 1].note = {
     kind: 'check',
     title: `O guloso usou ${total} cores`,
-    text: `Isso é um LIMITE SUPERIOR para χ, não o valor. A verificação é aresta a aresta: nenhuma pode ter as duas pontas da mesma cor.`
+    text: `A coloração prova χ≤${total}. Para concluir que esse é o mínimo, é preciso também um limite inferior. Em cada aresta, as pontas devem ter cores diferentes.`
   };
 
   return slides;

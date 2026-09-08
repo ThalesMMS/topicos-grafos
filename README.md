@@ -1,8 +1,10 @@
 # Grafos, rotas e algoritmos
 
-Seminário revisado: **43 slides, 88 minutos, quatro integrantes**. Cinco questões
-originais (três ENADE e duas POSCOMP), resoluções com grafos em estilo manuscrito,
-tópico adicional A*, três artigos de 2013/2019/2025 (incluindo logística) e roda final.
+Seminário revisado: **110 slides, 80 minutos de orçamento, quatro integrantes**.
+Cinco questões originais (três ENADE e duas POSCOMP), passos de algoritmos com
+grafos em estilo manuscrito, tópico adicional A* e quatro artigos sobre logística,
+compiladores, web e química. A duração real depende do ensaio; os slides de passo
+têm apenas 15 segundos previstos cada.
 
 - [Roteiro de ensaio e fontes](docs/ROTEIRO_SEMINARIO.md).
 - [Acervo local de provas e gabaritos](public/provas/index.html): 13 PDFs completos e seis recortes.

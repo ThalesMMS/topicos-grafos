@@ -10,7 +10,7 @@ export const slides = [
   {
     "id": "euler-hamilton",
     "type": "compare",
-    "title": "Perguntas semelhantes, garantias distintas",
+    "title": "Percursos de Euler e de Hamilton",
     "columns": [
       {
         "title": "Euler: arestas",
@@ -42,7 +42,7 @@ export const slides = [
   {
     "id": "fleury",
     "type": "concept",
-    "title": "Construir sem abandonar arestas",
+    "title": "Fleury evita pontes enquanto houver alternativa",
     "graph": G.destacar(G.euler,{nodes:{c:'active',d:'active'},caption:'c–a–b–c–d–e–f–d: cada uma das sete arestas uma vez.'}),
     "description": "Fleury evita uma ponte no grafo restante enquanto houver outra opção. Começa em c, um dos dois vértices ímpares.",
     "note": {
@@ -57,7 +57,7 @@ export const slides = [
   {
     "id": "dirac",
     "type": "concept",
-    "title": "Condição suficiente não é condição necessária",
+    "title": "O critério de Dirac garante um ciclo hamiltoniano",
     "graph": G.ciclo5,
     "description": "Dirac: em grafo simples não dirigido, n≥3 e grau mínimo≥n/2 garantem ciclo hamiltoniano.",
     "points": [

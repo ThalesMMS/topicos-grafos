@@ -59,7 +59,7 @@ export const slides = [
     "note": {
       "kind": "key",
       "title": "Hierarquia",
-      "text": "Forte ⇒ semiforte ⇒ fraca; as recíprocas falham. Kosaraju identifica CFCs com duas DFS e o grafo transposto; detalhes ficam para aprofundamento."
+      "text": "Forte ⇒ semiforte ⇒ fraca; as recíprocas falham. Kosaraju identifica as componentes fortemente conexas com duas DFS, invertendo os arcos entre as buscas."
     },
     "cobertura": [
       "conectividade-dirigida",

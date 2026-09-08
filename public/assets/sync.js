@@ -16,7 +16,7 @@
   })();
 
   function connect(options) {
-    const { role, key = '', onState, onMine, onError, onHello, onQuestion, onReset } = options;
+    const { role, key = '', onState, onMine, onError, onHello, onQuestion, onReset, onSlide, onSlideAt } = options;
     const importantMessages = new Map();
     const badge = document.querySelector('.connection');
     let socket;
@@ -58,6 +58,8 @@
         else if (message.type === 'hello') onHello?.(message);
         else if (message.type === 'question_received') onQuestion?.(message);
         else if (message.type === 'reset_complete') onReset?.(message);
+        else if (message.type === 'slide') onSlide?.(message);
+        else if (message.type === 'slide_at') onSlideAt?.(message);
       });
       socket.addEventListener('close', () => {
         if (closed) return;

@@ -75,7 +75,7 @@ export const slides = [
       "χ(G) = menor número de cores numa coloração própria",
       "ω(G) ≤ χ(G) ≤ Δ(G)+1"
     ],
-    "description": "Uma clique com k vértices exige k cores. Uma coloração com k cores prova que k cores bastam.",
+    "description": "ω é o tamanho da maior clique, um conjunto em que todos os pares são adjacentes. Δ é o maior grau. Uma clique com k vértices exige pelo menos k cores.",
     "points": [
       "Grafos sem arestas têm χ=1, se V não vazio.",
       "Bipartido ⇔ χ≤2 ⇔ não tem ciclo ímpar, para grafos simples não dirigidos.",

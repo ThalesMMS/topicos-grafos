@@ -1,21 +1,19 @@
 /**
- * Passo a passo de cada algoritmo — um slide por passo.
+ * Execuções detalhadas — um slide por mudança de estado.
  *
- * A regra do seminário passa a ser: toda vez que um algoritmo é apresentado,
- * ele é EXECUTADO na frente da turma, um passo por slide. São slides rápidos
- * de passar; o custo em tempo é baixo e o ganho didático é ver o estado mudar.
+ * Estes geradores são usados quando a mudança de estado faz parte do conteúdo
+ * ensinado. Exemplos parciais e visões gerais recebem esse nome no próprio slide.
  *
- * Nada aqui é digitado à mão: os passos vêm de rodar o algoritmo de verdade
- * (lib/trace.js e equilibrada/simulacoes.js). Se o algoritmo mudar, os slides
- * mudam junto — não existe divergência possível entre a tela e o código.
+ * Os estados e tabelas vêm da execução dos algoritmos. Os textos explicativos
+ * são escritos separadamente e precisam ser conferidos com esses estados.
  */
 
 import { tracoBfs, tracoDfs, tracoDijkstra, tracoKruskal, tracoKahn, tracoColoracao } from '../lib/trace.js';
-import { adjacencia } from '../equilibrada/simulacoes.js';
+import { adjacencia, aumentar } from '../equilibrada/simulacoes.js';
 import * as G from '../equilibrada/modelos.js';
 import { destacar, negativo } from './modelos.js';
 
-/** Duração de um slide de passo. São rápidos: 24 segundos cada. */
+/** Duração padrão fora do seminário; index.js aplica o orçamento do roteiro. */
 const POR_PASSO = 0.4;
 
 /** Carimba id único e duração nos slides que o gerador devolveu. */
@@ -73,7 +71,7 @@ export function tracoPrim({ base, origem, eyebrow = 'Prim' }) {
         ? `Entra ${u} pela aresta ${pai.get(u)}–${u} (chave ${chave.get(u)})`
         : `Começa em ${u}`,
       description: melhoras.length
-        ? `Depois de incluir ${u}, o corte muda e estas chaves baixam: ${melhoras.join(' · ')}.`
+        ? `A chave é o menor peso de uma aresta que liga o vértice à árvore. Após incluir ${u}, melhoram: ${melhoras.join(' · ')}.`
         : `Nenhuma chave melhorou com a entrada de ${u}.`,
       graph: destacar(base, {
         nodes: Object.fromEntries([...dentro].map(id => [id, 'done'])),
@@ -123,11 +121,11 @@ export function tracoBellmanFord({ base, origem, eyebrow = 'Bellman-Ford' }) {
       type: 'trace',
       eyebrow,
       title: relaxadas.length
-        ? `Passagem ${passagem}: ${relaxadas.length} aresta(s) relaxaram`
-        : `Passagem ${passagem}: nada mudou — pode parar`,
+        ? `Passagem ${passagem}: ${relaxadas.length} atualizações de distância`
+        : `Passagem ${passagem}: nenhuma distância mudou`,
       description: relaxadas.length
-        ? `Toda aresta é testada, na mesma ordem, toda passagem. Melhoraram: ${relaxadas.map(([a, b]) => `${a}→${b}`).join(' · ')}.`
-        : 'Uma passagem sem nenhuma melhora prova que as distâncias já são finais. As passagens restantes seriam desperdício.',
+        ? `Ordem dos testes: ${arestas.map(e => `${e.from}→${e.to}`).join(', ')}. Cada atualização vale imediatamente. Melhorias por: ${relaxadas.map(([a, b]) => `${a}→${b}`).join(', ')}.`
+        : 'Uma passagem completa sem melhora permite encerrar. As estimativas dos vértices alcançáveis já são as distâncias mínimas.',
       graph: destacar(base, {
         edges: relaxadas,
         notes: Object.fromEntries(ids.map(id => [id, d.get(id) === Infinity ? '∞' : String(d.get(id))])),
@@ -139,12 +137,77 @@ export function tracoBellmanFord({ base, origem, eyebrow = 'Bellman-Ford' }) {
         antes.get(id) === Infinity ? '∞' : String(antes.get(id)),
         d.get(id) === Infinity ? '∞' : String(d.get(id)),
         pai.get(id) || '—'
-      ])
+      ]),
+      note: passagem === ids.length - 1 ? {
+        kind: arestas.some(({from,to,peso}) => d.get(from) + peso < d.get(to)) ? 'warn' : 'check',
+        title: 'Verificação de ciclo negativo',
+        text: arestas.some(({from,to,peso}) => d.get(from) + peso < d.get(to))
+          ? 'Após n−1 passagens ainda há uma aresta que melhora uma distância. Existe ciclo negativo alcançável da origem.'
+          : 'Após n−1 passagens nenhuma aresta permite nova melhora. Não há ciclo negativo alcançável da origem.'
+      } : undefined
     });
 
     if (!relaxadas.length) break;
   }
   return slides;
+}
+
+/**
+ * Ford–Fulkerson passo a passo: um caminho aumentante por slide.
+ * A tabela compara o fluxo antes e depois; o desenho destaca tanto os arcos
+ * usados para a frente quanto o arco residual reverso que cancela fluxo.
+ */
+export function tracoFordFulkerson({ base, origem, destino, caminhos, eyebrow = 'Ford–Fulkerson' }) {
+  const execucao = aumentar(base, origem, destino, caminhos);
+  const zero = base.edges.map(() => 0);
+
+  return execucao.frames.map((frame, i) => {
+    const antes = i === 0 ? zero : execucao.frames[i - 1].flows;
+    const arcos = frame.path.slice(1).map((v, j) => [frame.path[j], v]);
+    const caminho = frame.path.join('→');
+    const reversos = arcos.filter(([u, v]) =>
+      !base.edges.some(e => e.from === u && e.to === v)
+      && base.edges.some(e => e.from === v && e.to === u));
+
+    const edges = base.edges.map((e, j) => {
+      const direto = arcos.some(([u, v]) => e.from === u && e.to === v);
+      const reverso = arcos.some(([u, v]) => e.from === v && e.to === u);
+      return {
+        ...e,
+        weight: undefined,
+        label: `${frame.flows[j]}/${e.weight}`,
+        state: reverso ? 'warn' : direto ? 'tree' : undefined
+      };
+    });
+
+    const valorAnterior = i === 0 ? 0 : execucao.frames[i - 1].value;
+    const correcao = reversos.length
+      ? `O trecho ${reversos.map(([u, v]) => `${u}→${v}`).join(', ')} é residual: ele reduz o fluxo no sentido oposto e libera uma rota melhor.`
+      : `O gargalo do caminho é ${frame.delta}; essa quantidade é somada a todos os seus arcos.`;
+
+    return {
+      type: 'trace',
+      eyebrow,
+      title: reversos.length
+        ? `Aumento ${i + 1}: ${caminho} corrige o fluxo anterior`
+        : `Aumento ${i + 1}: ${caminho} leva ${frame.delta}`,
+      description: `${i === 0 ? 'O fluxo começa em zero. ' : ''}${correcao} O valor total passa de ${valorAnterior} para ${frame.value}.`,
+      graph: {
+        ...base,
+        edges,
+        caption: reversos.length
+          ? `Após o aumento ${i + 1}: fluxo/capacidade. B→A reduz A→B em uma unidade.`
+          : `Rótulos: fluxo/capacidade após o aumento ${i + 1}. Verde: caminho usado nesta etapa.`
+      },
+      headers: ['aresta', 'antes', 'depois', 'capacidade'],
+      rows: base.edges.map((e, j) => [
+        `${e.from}→${e.to}`,
+        String(antes[j]),
+        String(frame.flows[j]),
+        String(e.weight)
+      ])
+    };
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -161,11 +224,21 @@ export const passosCores = numerar(
   'p-cores'
 );
 export const passosBellman = numerar(
-  tracoBellmanFord({ base: negativo, origem: 'S', eyebrow: 'Bellman-Ford de s' }),
+  tracoBellmanFord({ base: negativo, origem: 'S', eyebrow: 'Bellman–Ford de S' }),
   'p-bellman'
 );
 /** Dijkstra completo no grafo da rede — o da prova já tem trace próprio. */
 export const passosDijkstra = numerar(
   tracoDijkstra({ base: G.rotas, origem: 'S', eyebrow: 'Dijkstra de S' }),
   'p-dijkstra'
+);
+export const passosFluxo = numerar(
+  tracoFordFulkerson({
+    base: G.fluxo,
+    origem: 'S',
+    destino: 'T',
+    caminhos: G.aumentantes,
+    eyebrow: 'Ford–Fulkerson'
+  }),
+  'p-fluxo'
 );

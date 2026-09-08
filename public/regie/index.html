@@ -23,6 +23,18 @@
       </header>
       <div id="warning" role="status"></div>
 
+      <section class="control-section" aria-labelledby="navTitle">
+        <h2 id="navTitle">Slides</h2>
+        <p class="muted" id="slidePos">Aguardando o telão…</p>
+        <p class="muted" id="slideTitle"></p>
+        <div class="nav-remoto">
+          <button class="button secondary" type="button" data-nav="first" aria-label="Primeiro slide">⏮</button>
+          <button class="button nav-grande" type="button" data-nav="previous" aria-label="Slide anterior">←</button>
+          <button class="button nav-grande" type="button" data-nav="next" aria-label="Próximo slide">→</button>
+          <button class="button secondary" type="button" data-nav="last" aria-label="Último slide">⏭</button>
+        </div>
+      </section>
+
       <section class="control-section" aria-labelledby="pollsTitle">
         <h2 id="pollsTitle">Enquetes</h2>
         <div class="control-grid" id="pollControls"></div>
@@ -152,11 +164,26 @@
       renderQuestions();
     }
 
+    const slidePos = document.querySelector('#slidePos');
+    const slideTitle = document.querySelector('#slideTitle');
+
+    // Passar slide pelo celular: cada botão manda o comando e o telão responde
+    // com a posição nova, que atualiza o contador aqui.
+    for (const botao of document.querySelectorAll('[data-nav]')) {
+      botao.addEventListener('click', () => {
+        connection.send({ type: 'slide', action: botao.dataset.nav });
+      });
+    }
+
     const connection = LivePresentation.connect({
       role: 'control',
       onState: nextState => {
         roomState = nextState;
         render();
+      },
+      onSlideAt: message => {
+        slidePos.textContent = `Slide ${message.index + 1} de ${message.total}`;
+        slideTitle.textContent = message.title || '';
       },
       onHello: message => {
         authorizationChecked = true;

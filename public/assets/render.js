@@ -200,9 +200,12 @@ function codeSlide(slide) {
 }
 
 function compareSlide(slide) {
+  // Cada coluna pode trazer o próprio diagrama: é o que permite mostrar a
+  // MESMA rede sendo percorrida de três jeitos, lado a lado.
   const columns = (slide.columns || []).map(column => `<div class="compare-card">
       <p class="compare-title">${text(column.title)}</p>
       ${column.description ? `<p class="compare-description">${text(column.description)}</p>` : ''}
+      ${column.graph ? `<div class="compare-visual">${graphSvg(column.graph)}</div>` : ''}
       ${Array.isArray(column.items) && column.items.length
         ? `<ul>${column.items.map(item => `<li>${text(item)}</li>`).join('')}</ul>`
         : ''}
@@ -329,18 +332,25 @@ function questionSlide(slide) {
     </div>`;
 }
 
+/**
+ * Questão de prova: o recorte original, as alternativas e os votos.
+ *
+ * Nada mais aparece — nem instrução de tempo, nem resumo aberto. O enunciado
+ * completo continua no markup como texto só para leitor de tela, porque a
+ * imagem sozinha deixaria a questão inacessível; ele não ocupa espaço na tela.
+ */
 function originalQuestionSlide(slide) {
   const images = slide.images || [];
   return `<div class="slide-content original-layout">
-    <header class="original-head"><p class="question-source">${text(slide.source)}</p><p class="exam-time">3 minutos · leia, calcule e vote</p></header>
+    <header class="original-head"><p class="question-source">${text(slide.source)}</p></header>
     <div class="exam-pages${images.length > 1 ? ' exam-pages--two' : ''}">${images.map((name,i)=>`<span class="exam-image"><img src="/provas/recortes/${escapeHtml(name)}.png" alt="${escapeHtml(slide.source)} — ${escapeHtml(slide.question)}${images.length>1?` — parte ${i+1}`:''}" loading="lazy"></span>`).join('')}</div>
     <footer class="exam-footer"><div class="exam-votes" data-poll-alternatives="${escapeHtml(slide.poll)}">${slide.alternatives.map(a=>`<span class="alt"><b>${escapeHtml(a.id.toUpperCase())}</b><span class="alt-pct" data-alt-pct="${escapeHtml(a.id)}">—</span></span>`).join('')}</div><p data-poll-summary="${escapeHtml(slide.poll)}">Aguardando respostas…</p></footer>
-    <details class="exam-transcript"><summary>Resumo textual acessível e alternativas</summary><p>${text(slide.statement)}</p><p>${text(slide.question)}</p><ol>${slide.alternatives.map(a=>`<li>${text(a.text)}</li>`).join('')}</ol></details>
+    <div class="apenas-leitor-de-tela">${slide.statement ? `<p>${text(slide.statement)}</p>` : ''}<p>${text(slide.question)}</p><ol>${slide.alternatives.map(a=>`<li>${text(a.text)}</li>`).join('')}</ol></div>
   </div>`;
 }
 
 function articleSlide(slide) {
-  return `<div class="slide-content article-layout"><aside class="article-date"><p class="eyebrow">${text(slide.period)}</p><span>${text(slide.year)}</span><p class="article-paper">${text(slide.paper)}</p><p class="article-authors">${text(slide.authors)}</p><a href="${safeHref(slide.href)}" target="_blank" rel="noopener">Ler artigo ↗</a></aside><div>${titleOf(slide,'concept-title')}${pointsOf(slide)}<p class="article-connection">${text(slide.connection)}</p><p class="article-limit"><strong>Limite da evidência.</strong> ${text(slide.limit)}</p></div></div>`;
+  return `<div class="slide-content article-layout"><aside class="article-date"><p class="eyebrow">${text(slide.period)}</p><span>${text(slide.year)}</span><p class="article-paper">${text(slide.paper)}</p><p class="article-authors">${text(slide.authors)}</p><a href="${safeHref(slide.href)}" target="_blank" rel="noopener">Ler artigo ↗</a></aside><div>${titleOf(slide,'concept-title')}${pointsOf(slide)}<p class="article-connection">${text(slide.connection)}</p><p class="article-limit"><strong>Limitações.</strong> ${text(slide.limit)}</p></div></div>`;
 }
 
 /** Pergunta com resposta escondida: o <details> abre no clique ou no Enter. */

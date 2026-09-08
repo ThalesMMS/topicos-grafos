@@ -146,3 +146,34 @@ test('configuração pública entrega as perguntas, mas não slides/gabaritos', 
   assert.equal(data.slides, undefined);
   assert.doesNotMatch(source, /"answer"|"why"|"reveal"/);
 });
+
+test('passar slide pelo celular: só a régie comanda, e só o telão obedece', async () => {
+  const f = fixture();
+  const regie = f.socket({ role: 'control', control: true, deviceId: 'celular' });
+  const telao = f.socket({ role: 'presenter', control: true, deviceId: 'telao' });
+  const plateia = f.socket({ role: 'audience', control: false, deviceId: 'aluno' });
+
+  // A régie manda avançar: o comando chega ao telão e a ninguém mais.
+  await f.send(regie, { type: 'slide', action: 'next' });
+  assert.deepEqual(telao.messages.filter(m => m.type === 'slide'), [{ type: 'slide', action: 'next' }]);
+  assert.equal(plateia.messages.filter(m => m.type === 'slide').length, 0,
+    'a plateia recebeu comando de navegação');
+  assert.equal(regie.messages.filter(m => m.type === 'slide').length, 0,
+    'a régie recebeu de volta o próprio comando');
+
+  // A plateia tentando comandar não move nada: o worker exige `control`.
+  const antes = telao.messages.length;
+  await f.send(plateia, { type: 'slide', action: 'next' });
+  assert.equal(telao.messages.length, antes, 'a plateia conseguiu passar slide');
+
+  // Ação inventada é ignorada — nada de repassar string arbitrária ao telão.
+  await f.send(regie, { type: 'slide', action: 'apagar-tudo' });
+  assert.equal(telao.messages.length, antes, 'ação desconhecida foi repassada');
+
+  // O telão informa a posição; só quem controla recebe.
+  await f.send(telao, { type: 'slide_at', index: 11, total: 106, title: 'BFS' });
+  const posicao = regie.messages.find(m => m.type === 'slide_at');
+  assert.deepEqual(posicao, { type: 'slide_at', index: 11, total: 106, title: 'BFS' });
+  assert.equal(plateia.messages.filter(m => m.type === 'slide_at').length, 0,
+    'a plateia recebeu a posição do telão');
+});

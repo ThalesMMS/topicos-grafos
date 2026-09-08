@@ -1,80 +1,99 @@
 # Grafos, rotas e algoritmos — roteiro de ensaio
 
-Versão de 06/09/2026. Roteiro ativo: `public/slides/seminario/index.js`.
-43 slides; 88 minutos planejados; quatro integrantes com 22 minutos cada.
-O cronômetro mostra tempo decorrido e compara com o orçamento individual dos slides.
-Os tempos são um plano de ensaio, não uma garantia automática de duração.
-Ensaiar as falas e reservar os três minutos completos de leitura/votação por questão.
+Revisão de conteúdo de 07/09/2026. Roteiro ativo: `public/slides/seminario/index.js`.
+São 110 slides, quatro partes e orçamento total de 80 minutos. Os tempos são a soma
+dos campos `minutes`, não uma duração medida de fala. Há 15 segundos por slide
+de passo, dois minutos por questão, um minuto por resolução e dois minutos por
+artigo. O ensaio deve orientar o ritmo de apresentação.
 
 ## Organização
 
-| Janela | Integrante | Foco e resultado esperado |
-|---|---|---|
-| 00–22 min | 1 | Modelar, representar, executar BFS/DFS e resolver ENADE 2021 Q34 com duas extrações de Dijkstra. |
-| 22–44 min | 2 | Conectar Dijkstra ao OSPF (ENADE 2023 Q11), avaliar pesos negativos e executar uma atualização de Floyd–Warshall (POSCOMP 2014 Q37). |
-| 44–66 min | 3 | Diferenciar AGM e caminhos mínimos; executar Kruskal/Prim, ordem topológica e Kosaraju; resolver POSCOMP 2012 Q35. |
-| 66–88 min | 4 | Resolver a busca gulosa ENADE 2023 Q32, introduzir A*, comparar três artigos e conduzir discussão. |
+| Parte | Slides | Orçamento | Conteúdo |
+|---|---:|---:|---|
+| 1 | 40 | 24min30s | Modelagem, representações, conectividade, BFS, DFS e Dijkstra. ENADE 2021 Q34. |
+| 2 | 13 | 13min45s | Métricas da BFS, OSPF, pesos negativos, Bellman–Ford e Floyd–Warshall. ENADE 2023 Q11 e POSCOMP 2014 Q37. |
+| 3 | 39 | 23min15s | Árvores, Kruskal, Prim, topológica por DFS e Kahn, Kosaraju, Euler/Hamilton e fluxo. POSCOMP 2012 Q35. |
+| 4 | 18 | 18min30s | Busca gulosa, ENADE 2023 Q32, A*, coloração e quatro artigos. |
 
-Os nomes “Integrante 1–4” são rótulos editáveis, sem inventar nomes para o grupo.
-Na roda final, os quatro devem participar: um modera, um anota critérios, um provoca contrapontos e um sintetiza.
+As partes têm cargas diferentes. Cada apresentador deve ensaiar sua parte inteira,
+incluindo leitura das questões e explicação das tabelas. A versão ativa termina
+na comparação dos artigos, sem slide nem tempo reservado para roda final.
 
 ## Como usar as questões
 
-1. Projetar o recorte original e conceder três minutos. O clique na imagem abre o recorte ampliado; o link abaixo abre a prova completa na página.
-2. Votar pelo celular. A régie permite abrir/fechar e zerar a votação.
-3. Avançar para a execução no quadro quando houver, depois discutir a resolução. Os slides de resposta não abrem uma atividade de votação.
-4. Pedir a alguém para justificar um passo, não apenas dizer a letra.
+1. Projetar o recorte original e dar tempo para leitura. Os recortes e PDFs completos também estão em `public/provas/`.
+2. Votar pelo celular. A régie permite abrir, fechar e zerar a votação.
+3. Mostrar a execução, quando houver, e depois a resolução. As respostas não abrem nova votação.
+4. Pedir uma justificativa da escolha, além da letra da alternativa.
 
-| Questão | Página PDF | Resposta | Passos da resolução |
+| Questão | Página PDF | Resposta | Resolução |
 |---|---|---|---|
-| ENADE 2021 CC, Q34 | 43 | C | Inicializar D=0; extrair D; A=5, B=9, E=5, F=1; extrair F; E=4, G=2; C continua infinito. |
-| ENADE 2023 Eng. Computação, Q11 | 15 | C | I confunde saltos e custo; II descreve a cópia da base; III centraliza incorretamente; IV descreve troca de estados. II e IV são verdadeiras. |
-| POSCOMP 2014, Q37 | 12 (impressa 10) | B | Identificar “todos os pares”; usar matriz; permitir B como intermediário no exemplo; A→C passa de 9 para 5. |
-| POSCOMP 2012, Q35 | 14 (impressa 12) | B | I–C: topológica; II–D: Prim; III–E: Dijkstra; IV–A: CFC/Kosaraju; V–B: Kruskal. |
-| ENADE 2023 Eng. Computação, Q32 | 34–35 | B | 2464<2665: Porto Velho; 1326<1489: Cuiabá; depois Goiânia e São Paulo. |
+| ENADE 2021 CC, Q34 | 43 | C | D=0. Extrair D: A=5, B=9, E=5, F=1. Extrair F: E=4, G=2. C continua infinito. |
+| ENADE 2023 Eng. Computação, Q11 | 15 | C | I confunde saltos e custo. II descreve a cópia da base. III centraliza o cálculo incorretamente. IV descreve a troca de informações. II e IV são verdadeiras. |
+| POSCOMP 2014, Q37 | 12 (impressa 10) | B | Floyd–Warshall calcula distâncias entre todos os pares. No exemplo didático, permitir B muda A→C de 9 para 5. |
+| POSCOMP 2012, Q35 | 14 (impressa 12) | B | I–C: topológica por DFS. II–D: Prim. III–E: Dijkstra. IV–A: CFC/Kosaraju. V–B: Kruskal. |
+| ENADE 2023 Eng. Computação, Q32 | 34–35 | B | Porto Velho (2464) vence Macapá (2665). Cuiabá (1326) vence Palmas (1489). Seguem Goiânia (809) e São Paulo (0). |
 
-POSCOMP 2012: o arquivo de gabarito localizado na SBC é **provisório**. A associação também foi resolvida conceitualmente; não foi tratada como gabarito definitivo.
-Q35 usa “busca em largura” de modo amplo para Prim/Dijkstra. Explicar que as implementações usuais usam prioridade, diferente da fila FIFO da BFS.
+O gabarito local do POSCOMP 2012 é **provisório**. A associação também confere
+pelas definições. A Q35 chama Prim e Dijkstra de “busca em largura” de forma ampla.
+As regras de prioridade diferem da fila FIFO da BFS.
 
-## Pontos de atenção para quem apresenta
+## Conferência dos passos e transições
 
-- Q34: o original contém **D→E de peso 5** e **E→B de peso 1**. A terceira extração é **G**, não A. Não continuar a execução antes de responder o estado solicitado.
-- Q32: o desenho original é **não dirigido** e possui **Macapá–São Paulo**. A alternativa A é um caminho válido; só não é o escolhido pela regra gulosa. As estimativas não são pesos dos trechos.
-- Dijkstra: exigir pesos não negativos; relaxamento compara o candidato com a melhor estimativa atual. Com heap binário e listas: O((n+m) log n).
-- BFS: descobre por camadas e conta arestas. DFS: usa a ordem de término; não calcula menor caminho em geral.
-- Prim escolhe uma aresta que cruza o corte. Kruskal escolhe uma aresta que une componentes. Ambos dão custo 13 no exemplo, mas em ordens diferentes.
-- Floyd–Warshall: k fica no laço externo. Preserve pesos de laços negativos na inicialização; diagonal negativa sinaliza ciclo negativo. Um par só perde mínimo finito se pode passar pelo ciclo e chegar ao destino.
-- A*: admissibilidade limita h; consistência permite finalizar sem reabertura. Se necessário, reabrir vértices melhorados. Não confundir a busca gulosa geral com a regra local particular da Q32.
-- OSPF: usar as hipóteses simplificadas da prova. A RFC explica o escopo por áreas na rede real.
+- **BFS:** níveis de A,B,C,D,E = 0,1,1,2,3. A árvore de pais recupera A–B–D–E. Outra ordem de vizinhos pode mudar pais, mas preserva distâncias. Raio 2, diâmetro 3 e centro {B,C,D} vêm dessa mesma rede.
+- **DFS:** vizinhos em ordem alfabética. Descoberta/término: A=1/10, B=2/9, C=4/5, D=3/8, E=6/7. No não dirigido, a volta pela aresta do pai não conta como ciclo.
+- **Dijkstra:** em S,A,B,T, as distâncias finais são 0,2,3,6. B cai de 5 para 3. Na Q34, parar após D e F; a terceira extração seria G. O −1 da prova representa infinito, não peso negativo.
+- **OSPF:** S–A–T tem duas conexões e custo 9; S–A–B–T tem três e custo 6. Cada roteador usa a própria origem. O enunciado adota atraso como custo; na rede real, as bases têm escopo por área.
+- **Bellman–Ford:** a ordem é S→A, S→B, B→A. A recebe 2 e depois 1 já na primeira passagem, pois as atualizações valem imediatamente. A segunda não melhora nada. A garantia por k arestas não limita a propagação a uma aresta por passagem nessa implementação. Após n−1 passagens, uma melhora adicional indica ciclo negativo alcançável.
+- **Floyd–Warshall:** o slide mostra uma atualização da matriz, não a execução inteira. k fica no laço externo. A inicialização preserva laços negativos. A diagonal negativa sinaliza ciclo negativo; um par perde o mínimo finito se pode passar pelo ciclo e chegar ao destino.
+- **Kruskal e Prim:** ambos chegam ao custo 13. Kruskal aceita AB, AD, CE, rejeita BD por ciclo e aceita BE. Prim, partindo de A, escolhe AB, AD, BE, EC. Sua chave é o peso da melhor ligação à árvore, sem acumular a distância desde A.
+- **Topológica:** a Q35 descreve DFS. No DAG, o término é 5,4,2,3,1 e a inversão é 1,3,2,4,5. Kahn é outra abordagem e produz 1,2,3,4,5. Se a fila esvazia antes de incluir todos, há ciclo bloqueando o restante; nem todo vértice bloqueado precisa pertencer ao ciclo.
+- **Kosaraju:** o slide resume as três fases. A primeira DFS termina em d,c,b,a. A segunda usa o transposto na ordem a,b,c,d e encontra {a}, {b,c}, {d}. Isso completa os mecanismos necessários para a Q35.
+- **Euler/Hamilton e fluxo:** são complementos, sem questão própria entre as cinco selecionadas. Euler trata de usar arestas uma vez; Hamilton, de visitar vértices; Fleury traz um resultado comentado. Ford–Fulkerson agora tem um slide por caminho aumentante: os aumentos são 2,1,1,1 e o total é 5. O último caminho cancela uma unidade em A→B. O corte de capacidade 5 confirma o máximo.
+- **Gulosa:** a Q32 usa escolha local entre vizinhos. Macapá–São Paulo existe, mas a regra escolhe Porto Velho primeiro. Os valores h são estimativas ao destino, sem custos dos trechos. Não permitem comparar custos reais das rotas nem executar A* numericamente.
+- **A*:** extensão conceitual, com f=g+h, h admissível e h no objetivo igual a zero. Consistência permite fechar vértices sem reabrir. Sem ela, melhorias em g exigem reabertura. Em grafo finito com pesos não negativos, retirar o objetivo da fronteira permite encerrar com garantia.
+- **Coloração:** na ordem A,B,C,D,E, as cores são 0,1,1,0,1. Duas cores bastam e a existência de uma aresta exige pelo menos duas. O grafo coroa seguinte mostra como outra ordem pode usar mais cores que o necessário. Esse assunto prepara a aplicação em compiladores.
 
-## Pesquisa: o que cada artigo acrescenta
+## O que cada artigo acrescenta
 
-**2010–2015:** Delling, D.; Goldberg, A. V.; Pajor, T.; Werneck, R. F. *Customizable Route Planning in Road Networks*. Versão dos autores de 24/07/2013, que expande trabalhos de conferência. [PDF Microsoft Research](https://www.microsoft.com/en-us/research/wp-content/uploads/2013/01/crp_web_130724.pdf).
-Contribuição: separar preparação da topologia, customização da métrica e consulta. Pergunta para a turma: o que precisa ser recalculado se o trânsito muda, mas a rede não?
+**1959 — logística.** Dantzig e Ramser, *The Truck Dispatching Problem*.
+Parte de distâncias entre postos e terminal para distribuir entregas entre
+caminhões. Dijkstra ou Floyd–Warshall podem fornecer essas distâncias. Escolher
+clientes e a ordem de visitas é outro problema, diferente da regra local da Q32.
+O artigo apresenta um procedimento baseado em programação linear e problemas de
+teste. [Publicação original](https://doi.org/10.1287/mnsc.6.1.80).
 
-**2016–2020 — logística:** Kool, W.; van Hoof, H.; Welling, M. *Attention, Learn to Solve Routing Problems!* ICLR 2019. [Artigo e versões](https://arxiv.org/abs/1803.08475), [implementação dos autores](https://github.com/wouterkool/attention-learn-to-route).
-Contribuição: aprender uma política de construção de rotas com atenção e REINFORCE. Discutir objetivo, restrições de capacidade e generalização. O bom resultado em benchmarks não substitui uma verificação de viabilidade em produção.
+**1982 — compiladores.** Chaitin, *Register allocation & spilling via graph coloring*.
+Conflitos entre valores viram arestas e registradores viram cores. O trabalho
+amplia a alocação por coloração para escolher spills a partir do grafo e de custos.
+Vai além de colorir numa ordem fixa. [Resumo do autor na IBM](https://research.ibm.com/publications/register-allocation-andamp-spilling-via-graph-coloring),
+[publicação](https://dl.acm.org/doi/10.1145/800230.806984).
 
-**2021–2026 — avanço recente:** Duan, R.; Mao, J.; Mao, X.; Shu, X.; Yin, L. *Breaking the Sorting Barrier for Directed Single-Source Shortest Paths*. 2025. [Artigo](https://arxiv.org/abs/2504.17033).
-Contribuição: limite determinístico O(m log^(2/3) n) para SSSP dirigido com pesos reais não negativos, no modelo comparação–adição. Rompe a barreira anterior em grafos esparsos. Discutir diferença entre complexidade assintótica e tempo medido num sistema real.
+**1999 — web.** Page, Brin, Motwani e Winograd, *The PageRank Citation Ranking:
+Bringing Order to the Web*. Links formam um dígrafo. O navegante inclui saltos
+aleatórios e tratamento das páginas sem saída. A iteração usa probabilidades de
+transição, não a matriz de adjacência bruta. [Relatório original](http://ilpubs.stanford.edu:8090/422/),
+[explicação técnica de Stanford](https://www-nlp.stanford.edu/IR-book/html/htmledition/pagerank-1.html).
 
-Essa evolução relaciona três frentes de pesquisa (engenharia de rotas, heurísticas aprendidas e teoria). Não afirma que os artigos resolvem o mesmo problema ou que um substituiu o anterior.
+**2020 — química.** Stokes et al., *A Deep Learning Approach to Antibiotic Discovery*.
+A rede propaga mensagens pelas ligações e usa descritores moleculares na previsão.
+A triagem identificou atividade antibacteriana da halicina, com validação em
+cultura e em animais. Isso não equivale a aprovação clínica.
+[Artigo completo](https://pmc.ncbi.nlm.nih.gov/articles/8349178/),
+[registro da publicação](https://pubmed.ncbi.nlm.nih.gov/32084340/).
 
-## Roda final — quatro minutos
-
-Transportadora com capacidade limitada e trânsito variável propõe adotar um planejador aprendido.
-Um minuto para definir objetivos; dois para ouvir argumentos; um para sintetizar um benchmark, uma restrição de viabilidade e um plano de recuperação.
-Se a turma não iniciar: “Uma rota 5% menor que viola a capacidade é aceitável?” ou “Que comparação sustenta a troca de algoritmo?”.
-Relacionar as respostas às hipóteses das questões e aos limites dos três artigos.
+A síntese compara modelagem, objetivo e saída. Os artigos ampliam as aplicações
+do conteúdo, sem necessariamente resolver as mesmas perguntas das provas.
 
 ## Fontes técnicas e acervo
 
 - [Princeton: caminhos mínimos](https://algs4.cs.princeton.edu/44sp/).
 - [Princeton: árvores geradoras mínimas](https://algs4.cs.princeton.edu/43mst/).
-- [RFC 2328: OSPF, seções 2.2 e 3](https://www.rfc-editor.org/rfc/rfc2328).
+- [RFC 2328: OSPF](https://www.rfc-editor.org/rfc/rfc2328).
 - `public/provas/index.html`: índice de 13 PDFs, incluindo material extra ENADE 2011 e POSCOMP 2019.
-- `public/provas/fontes.json`: URL de origem, tamanho, data de download e SHA-256.
-- `public/provas/recortes/manifesto.json`: página e coordenadas de cada recorte.
-- `scripts/recortar-provas.py`: reprodução dos recortes a 216 dpi, sem redesenhar enunciados.
+- `public/provas/fontes.json`: origem, tamanho, data de download e SHA-256.
+- `public/provas/recortes/manifesto.json`: páginas e coordenadas dos seis recortes.
+- `scripts/recortar-provas.py`: reprodução dos recortes a 216 dpi.
 
-Os módulos curriculares anteriores continuam como acervo de código. Saíram do roteiro principal as telas de classificação, equivalência, isomorfismo, métricas, Euler/Hamilton, planaridade, coloração, fluxo e emparelhamento que não conduziam às cinco questões escolhidas. O acervo não deve ser confundido com a versão revisada das questões: use os modelos em `slides/seminario`.
+O roteiro importa exemplos de `slides/equilibrada/`, mas não essa apresentação
+inteira. A seleção e a ordem ativas estão em `slides/seminario/`.

@@ -12,10 +12,22 @@ test('setas referenciam marcadores únicos, mesmo com outros slides ocultos',()=
   for(const html of [a,b]) for(const ref of html.matchAll(/marker-end="url\(#([^)]+)\)"/g))assert.ok(html.includes(`id="${ref[1]}"`));
 });
 
-/** Todos os specs de grafo declarados no deck, com o número do slide. */
-const diagramas = CONFIG.slides
-  .map((slide, index) => ({ slide: index + 1, titulo: slide.title || slide.question, spec: slide.graph }))
-  .filter(item => item.spec);
+/**
+ * Todos os specs de grafo do deck — inclusive os que vivem DENTRO de uma
+ * coluna de comparação. Antes esta lista só via `slide.graph`, e os diagramas
+ * por coluna passavam sem nenhuma verificação geométrica.
+ */
+const diagramas = CONFIG.slides.flatMap((slide, index) => {
+  const nome = slide.title || slide.question || slide.id;
+  const encontrados = [];
+  if (slide.graph) encontrados.push({ slide: index + 1, titulo: nome, spec: slide.graph });
+  for (const coluna of slide.columns || []) {
+    if (coluna.graph) {
+      encontrados.push({ slide: index + 1, titulo: `${nome} › ${coluna.title}`, spec: coluna.graph });
+    }
+  }
+  return encontrados;
+});
 
 test('o rótulo cabe dentro da forma do vértice', () => {
   for (const { slide, spec } of diagramas) {

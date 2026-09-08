@@ -1743,3 +1743,37 @@ textarea[aria-invalid="true"] {
     max-height: 30vh;
   }
 }
+
+/* --- controle remoto de slides na régie (uso no celular) ------------------ */
+
+.nav-remoto {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr auto;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+}
+
+/* Alvos grandes: isto é operado com o polegar, em pé, no escuro. */
+.nav-remoto .button {
+  min-height: 3.5rem;
+  font-size: 1.1rem;
+}
+
+.nav-remoto .nav-grande {
+  min-height: 4.5rem;
+  font-size: 1.8rem;
+}
+
+#slidePos {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+#slideTitle {
+  margin: 0.15rem 0 0;
+  overflow: hidden;
+  font-size: var(--text-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

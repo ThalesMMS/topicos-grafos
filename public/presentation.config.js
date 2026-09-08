@@ -1,5 +1,5 @@
 /**
- * Seminário de 88 minutos para quatro integrantes. Roteiro e fontes:
+ * Seminário para quatro integrantes, com duração calculada pelos slides. Fontes:
  * docs/ROTEIRO_SEMINARIO.md. Autenticação e protocolo de sala são preservados.
  * Os módulos anteriores continuam no repositório como material de consulta;
  * não são importados pelo roteiro principal.
