@@ -93,7 +93,7 @@ function coverSlide(slide) {
       </div>
       <div>
         <div class="qr-card qr-card--limpo">
-          <canvas class="cover-qr" aria-hidden="true"></canvas>
+          <button class="cover-qr-button" type="button" aria-label="Ampliar QR code de participação" aria-haspopup="dialog" aria-controls="qrDialog"><canvas class="cover-qr" aria-hidden="true"></canvas></button>
         </div>
         <p class="live-count"><strong data-connected>0</strong> pessoas conectadas</p>
       </div>
@@ -341,9 +341,12 @@ function questionSlide(slide) {
  */
 function originalQuestionSlide(slide) {
   const images = slide.images || [];
+  const participationLayout = slide.id === 'poscomp_floyd-pergunta' ? ' exam-participation--below'
+    : slide.id === 'enade_gulosa-pergunta' ? ' exam-participation--halves' : '';
   return `<div class="slide-content original-layout">
     <header class="original-head"><p class="question-source">${text(slide.source)}</p></header>
-    <div class="exam-pages${images.length > 1 ? ' exam-pages--two' : ''}">${images.map((name,i)=>`<span class="exam-image"><img src="/provas/recortes/${escapeHtml(name)}.png" alt="${escapeHtml(slide.source)} — ${escapeHtml(slide.question)}${images.length>1?` — parte ${i+1}`:''}" loading="lazy"></span>`).join('')}</div>
+    <div class="exam-participation${participationLayout}"><div class="exam-pages${images.length > 1 ? ' exam-pages--two' : ''}">${images.map((name,i)=>`<span class="exam-image"><img src="/provas/recortes/${escapeHtml(name)}.png" alt="${escapeHtml(slide.source)} — ${escapeHtml(slide.question)}${images.length>1?` — parte ${i+1}`:''}" loading="lazy"></span>`).join('')}</div>
+    <aside class="exam-qr"><button class="exam-qr-button" type="button" aria-label="Ampliar QR code de participação" aria-haspopup="dialog" aria-controls="qrDialog"><canvas class="exam-qr-canvas" aria-hidden="true"></canvas></button></aside></div>
     <footer class="exam-footer"><div class="exam-votes" data-poll-alternatives="${escapeHtml(slide.poll)}">${slide.alternatives.map(a=>`<span class="alt"><b>${escapeHtml(a.id.toUpperCase())}</b><span class="alt-pct" data-alt-pct="${escapeHtml(a.id)}">—</span></span>`).join('')}</div><p data-poll-summary="${escapeHtml(slide.poll)}">Aguardando respostas…</p></footer>
     <div class="apenas-leitor-de-tela">${slide.statement ? `<p>${text(slide.statement)}</p>` : ''}<p>${text(slide.question)}</p><ol>${slide.alternatives.map(a=>`<li>${text(a.text)}</li>`).join('')}</ol></div>
   </div>`;
