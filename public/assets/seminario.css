@@ -161,3 +161,15 @@
   .exam-participation--halves .exam-image img{max-height:none}
   .exam-participation--halves .exam-qr{align-self:center;width:10rem}
 }
+
+.carousel-controls,.carousel-steps{display:flex;align-items:center;justify-content:center;gap:.65rem;margin:.6rem 0}
+.carousel-controls{justify-content:space-between}
+.carousel-controls button,.carousel-steps button{border:1px solid #bfc4b7;border-radius:3px;background:#f5f2e9;color:#354c40;min-width:2.3rem;min-height:2.3rem;cursor:pointer}
+.carousel-controls button:disabled{opacity:.35;cursor:default}
+.carousel-steps button[aria-pressed=true]{background:#17685b;color:white}
+.presenter .carousel-changed td{background:#e7e9af;font-weight:700}
+.table-carousel [hidden]{display:none}
+
+.presenter path.gd-edge--updated{stroke:#b65019;stroke-width:4;stroke-dasharray:8 4}
+.presenter text.gd-edge--updated{fill:#b65019;stroke:none;font-weight:700}
+[data-carousel-graph][hidden]{display:none}

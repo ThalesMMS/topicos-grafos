@@ -245,6 +245,20 @@ function stepsSlide(slide) {
  * tabela de estado à direita. É o mesmo grafo slide após slide — só mudam os
  * destaques e os números, para a plateia acompanhar sem se reorientar.
  */
+function carouselMarkup(slide) {
+  const start = slide.carouselStart || 0;
+  return `<div class="table-carousel" role="region" aria-label="Passagens de Bellman–Ford" aria-roledescription="carrossel" data-carousel data-step="${start}">
+    <div class="carousel-controls"><button type="button" data-carousel-prev aria-label="Passagem anterior" ${start === 0 ? 'disabled' : ''}>←</button>
+      <span data-carousel-status aria-live="polite">${start + 1} / ${slide.carousel.length} · ${text(slide.carousel[start].title)}</span>
+      <button type="button" data-carousel-next aria-label="Próxima passagem" ${start === slide.carousel.length - 1 ? 'disabled' : ''}>→</button></div>
+    ${slide.carousel.map((frame, index) => `<div data-carousel-panel ${index === start ? '' : 'hidden'}>
+      <table class="slide-table trace-table"><thead><tr>${slide.headers.map(h => `<th scope="col">${text(h)}</th>`).join('')}</tr></thead>
+      <tbody>${frame.rows.map((row, rowIndex) => `<tr class="${frame.changedRows.includes(rowIndex) ? 'carousel-changed' : ''}">${row.map((cell, i) => i ? `<td>${text(cell)}</td>` : `<th scope="row">${text(cell)}</th>`).join('')}</tr>`).join('')}</tbody></table>
+    </div>`).join('')}
+    <div class="carousel-steps" aria-label="Escolher passagem">${slide.carousel.map((frame, index) => `<button type="button" data-carousel-goto="${index}" data-title="${escapeHtml(frame.title)}" aria-label="${escapeHtml(frame.title)}" aria-pressed="${index === start}">${index}</button>`).join('')}</div>
+  </div>`;
+}
+
 function traceSlide(slide) {
   const cabecalho = (slide.headers || []).map(h => `<th scope="col">${text(h)}</th>`).join('');
   const corpo = (slide.rows || []).map(row => {
@@ -255,12 +269,12 @@ function traceSlide(slide) {
   }).join('');
 
   return `<div class="slide-content trace-layout">
-      <div class="trace-visual">${graphOf(slide)}</div>
+      <div class="trace-visual">${slide.graphFrames ? slide.graphFrames.map((graph, i) => `<div data-carousel-graph ${i === (slide.carouselStart || 0) ? '' : 'hidden'}>${graphSvg(graph)}</div>`).join('') : graphOf(slide)}</div>
       <div class="trace-side">
         ${eyebrowOf(slide)}
         ${titleOf(slide, 'trace-title')}
         ${descriptionOf(slide)}
-        ${cabecalho || corpo ? `<div class="table-scroll">
+        ${slide.carousel ? carouselMarkup(slide) : cabecalho || corpo ? `<div class="table-scroll">
           <table class="slide-table trace-table">
             ${cabecalho ? `<thead><tr>${cabecalho}</tr></thead>` : ''}
             <tbody>${corpo}</tbody>

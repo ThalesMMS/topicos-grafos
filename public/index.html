@@ -85,6 +85,27 @@
       `<section class="slide" data-index="${index}" data-kind="${escapeHtml(slide.original && !slide.reveal ? 'original' : slide.type)}" data-activity="${escapeHtml(activityForSlide(slide))}" aria-hidden="true"><span class="slide-owner" aria-label="Parte ${slide.parte}">${slide.parte}</span>${slideMarkup(slide, renderOptions)}</section>`
     )).join('');
 
+    document.querySelectorAll('[data-carousel]').forEach(carousel => {
+      const panels = [...carousel.querySelectorAll('[data-carousel-panel]')];
+      const steps = [...carousel.querySelectorAll('[data-carousel-goto]')];
+      carousel.addEventListener('click', event => {
+        const button = event.target.closest('button');
+        if (!button) return;
+        let index = Number(carousel.dataset.step);
+        if (button.hasAttribute('data-carousel-prev')) index--;
+        else if (button.hasAttribute('data-carousel-next')) index++;
+        else if (button.hasAttribute('data-carousel-goto')) index = Number(button.dataset.carouselGoto);
+        else return;
+        index = Math.max(0, Math.min(panels.length - 1, index));
+        carousel.dataset.step = index;
+        panels.forEach((panel, i) => { panel.hidden = i !== index; });
+        carousel.closest('.slide').querySelectorAll('[data-carousel-graph]').forEach((graph, i) => { graph.hidden = i !== index; });
+        steps.forEach((step, i) => step.setAttribute('aria-pressed', String(i === index)));
+        carousel.querySelector('[data-carousel-prev]').disabled = index === 0;
+        carousel.querySelector('[data-carousel-next]').disabled = index === panels.length - 1;
+        carousel.querySelector('[data-carousel-status]').textContent = `${index + 1} / ${panels.length} · ${steps[index].dataset.title}`;
+      });
+    });
     const slides = [...document.querySelectorAll('.slide')];
     document.querySelectorAll('.cover-qr, .exam-qr-canvas').forEach(canvas => LivePresentation.drawQr(canvas, participantUrl, 640));
     LivePresentation.drawQr(cornerQr.querySelector('canvas'), participantUrl, 320);
