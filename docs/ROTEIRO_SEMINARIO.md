@@ -1,7 +1,7 @@
 # Grafos, rotas e algoritmos — roteiro de ensaio
 
 Revisão de conteúdo de 07/09/2026. Roteiro ativo: `public/slides/seminario/index.js`.
-São 110 slides, quatro partes e orçamento total de 80 minutos. Os tempos são a soma
+São 114 slides, quatro partes e orçamento total de 80 minutos. Os tempos são a soma
 dos campos `minutes`, não uma duração medida de fala. Há 15 segundos por slide
 de passo, dois minutos por questão, um minuto por resolução e dois minutos por
 artigo. O ensaio deve orientar o ritmo de apresentação.
@@ -13,7 +13,7 @@ artigo. O ensaio deve orientar o ritmo de apresentação.
 | 1 | 40 | 24min30s | Modelagem, representações, conectividade, BFS, DFS e Dijkstra. ENADE 2021 Q34. |
 | 2 | 13 | 13min45s | Métricas da BFS, OSPF, pesos negativos, Bellman–Ford e Floyd–Warshall. ENADE 2023 Q11 e POSCOMP 2014 Q37. |
 | 3 | 39 | 23min15s | Árvores, Kruskal, Prim, topológica por DFS e Kahn, Kosaraju, Euler/Hamilton e fluxo. POSCOMP 2012 Q35. |
-| 4 | 18 | 18min30s | Busca gulosa, ENADE 2023 Q32, comparação com A*, coloração, Welsh–Powell e quatro artigos. |
+| 4 | 22 | 18min30s | Busca gulosa, ENADE 2023 Q32, comparação com A*, coloração, Welsh–Powell e quatro artigos. |
 
 As partes têm cargas diferentes. Cada apresentador deve ensaiar sua parte inteira,
 incluindo leitura das questões e explicação das tabelas. A versão ativa termina
@@ -52,7 +52,7 @@ As regras de prioridade diferem da fila FIFO da BFS.
 - **Euler/Hamilton e fluxo:** são complementos, sem questão própria entre as cinco selecionadas. Euler trata de usar arestas uma vez; Hamilton, de visitar vértices; Fleury traz um resultado comentado. Ford–Fulkerson agora tem um slide por caminho aumentante: os aumentos são 2,1,1,1 e o total é 5. O último caminho cancela uma unidade em A→B. O corte de capacidade 5 confirma o máximo.
 - **Gulosa:** a Q32 usa escolha local entre vizinhos. Macapá–São Paulo existe, mas a regra escolhe Porto Velho primeiro. Os valores h são estimativas ao destino, sem custos dos trechos. Não permitem comparar custos reais das rotas nem executar A* numericamente.
 - **A*:** aparece apenas na comparação visual de prioridades. Usa f=g+h e, no exemplo, corrige a primeira expansão para chegar ao caminho de custo 4. As condições formais de correção foram retiradas para não interromper a progressão do seminário.
-- **Coloração:** na ordem A,B,C,D,E, as cores são 0,1,1,0,1. Duas cores bastam e a existência de uma aresta exige pelo menos duas. O grafo coroa seguinte mostra como outra ordem pode usar mais cores que o necessário. Welsh–Powell responde a esse problema escolhendo grau decrescente antes de aplicar o mesmo guloso; no exemplo D,A,B,C,E, encontra três cores, que são ótimas por causa da clique A–B–D. Esse assunto prepara a aplicação em compiladores.
+- **Coloração:** na ordem A,B,C,D,E, as cores são 0,1,1,0,1. Duas cores bastam e a existência de uma aresta exige pelo menos duas. O grafo coroa seguinte mostra como outra ordem pode usar mais cores que o necessário. Welsh–Powell aparece em cinco slides: ordena D,A,B,C,E por grau; forma as classes {D}, {A,E} e {B,C}; e usa a clique A–B–D para provar que as três cores são ótimas neste exemplo. Esse assunto prepara a aplicação em compiladores.
 
 ## O que cada artigo acrescenta
 

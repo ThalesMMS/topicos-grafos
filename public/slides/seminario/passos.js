@@ -210,6 +210,90 @@ export function tracoFordFulkerson({ base, origem, destino, caminhos, eyebrow = 
   });
 }
 
+/**
+ * Welsh–Powell: ordenar por grau e preencher uma classe de cor por varredura.
+ * O último slide separa a execução da prova de que, neste exemplo, três cores
+ * são realmente necessárias.
+ */
+export function tracoWelshPowell({ base, eyebrow = 'Welsh–Powell' }) {
+  if (base.directed) throw new Error('Welsh–Powell exige grafo não dirigido');
+  const adj = adjacencia(base);
+  const ids = base.nodes.map(n => n.id);
+  const grau = new Map(ids.map(id => [id, adj.get(id).length]));
+  const ordem = [...ids].sort((a, b) => grau.get(b) - grau.get(a) || a.localeCompare(b));
+  const cor = new Map();
+  const classes = [];
+  const slides = [{
+    type: 'trace',
+    eyebrow,
+    title: `Primeiro, ordenar: ${ordem.join(', ')}`,
+    description: 'Welsh–Powell coloca primeiro os vértices de maior grau. Nos empates, este exemplo usa ordem alfabética para que a execução seja determinística.',
+    graph: destacar(base, {
+      nodes: Object.fromEntries(ids.map(id => [id, 'dim'])),
+      notes: Object.fromEntries(ids.map(id => [id, `grau ${grau.get(id)}`])),
+      caption: 'A ordem fica fixa antes de começar a colorir.'
+    }),
+    headers: ['posição', 'vértice', 'grau'],
+    rows: ordem.map((id, i) => [String(i + 1), id, String(grau.get(id))])
+  }];
+
+  while (cor.size < ids.length) {
+    const numero = classes.length + 1;
+    const anteriores = new Set(cor.keys());
+    const classe = [];
+    const decisoes = new Map();
+
+    for (const id of ordem) {
+      if (anteriores.has(id)) {
+        decisoes.set(id, 'já colorido');
+        continue;
+      }
+      const conflitos = classe.filter(outro => (adj.get(id) || []).some(v => v.to === outro));
+      if (conflitos.length) {
+        decisoes.set(id, `aguarda: vizinho de ${conflitos.join(', ')}`);
+      } else {
+        classe.push(id);
+        cor.set(id, numero);
+        decisoes.set(id, `entra na cor ${numero}`);
+      }
+    }
+    classes.push(classe);
+
+    const faltam = ordem.filter(id => !cor.has(id));
+    const estados = ['active', 'done', 'warn', 'dim'];
+    slides.push({
+      type: 'trace',
+      eyebrow,
+      title: `Cor ${numero}: ${classe.join(' e ')}`,
+      description: `Uma varredura percorre ${ordem.join(', ')}. Um vértice entra nesta cor somente se não for adjacente a nenhum vértice já colocado na mesma classe.`,
+      graph: destacar(base, {
+        nodes: Object.fromEntries(ids.map(id => [id, cor.has(id) ? estados[(cor.get(id) - 1) % estados.length] : 'dim'])),
+        notes: Object.fromEntries(ids.map(id => [id, cor.has(id) ? `cor ${cor.get(id)}` : 'sem cor'])),
+        caption: `Cor ${numero} = {${classe.join(', ')}}${faltam.length ? ` · faltam ${faltam.join(', ')}` : ' · todos coloridos'}`
+      }),
+      headers: ['vértice', 'grau', 'decisão nesta varredura', 'cor'],
+      rows: ordem.map(id => [id, String(grau.get(id)), decisoes.get(id), cor.has(id) ? String(cor.get(id)) : '—'])
+    });
+  }
+
+  slides.push({
+    type: 'trace',
+    eyebrow,
+    title: 'Resultado: três cores, e três são necessárias',
+    description: `As classes são ${classes.map((c, i) => `cor ${i + 1} = {${c.join(', ')}}`).join(' · ')}. Como A, B e D formam uma clique, precisam de cores diferentes. O algoritmo usou três, então atingiu o mínimo neste grafo.`,
+    graph: destacar(base, {
+      nodes: Object.fromEntries(ids.map(id => [id, ['active', 'done', 'warn', 'dim'][(cor.get(id) - 1) % 4]])),
+      edges: [['A', 'B'], ['A', 'D'], ['B', 'D']],
+      notes: Object.fromEntries(ids.map(id => [id, `cor ${cor.get(id)}`])),
+      caption: 'O triângulo A–B–D prova χ ≥ 3; a coloração construída prova χ ≤ 3.'
+    }),
+    headers: ['cor', 'vértices da classe'],
+    rows: classes.map((classe, i) => [String(i + 1), classe.join(', ')])
+  });
+
+  return slides;
+}
+
 // ---------------------------------------------------------------------------
 // Os passo a passo do seminário.
 // ---------------------------------------------------------------------------
@@ -222,6 +306,10 @@ export const passosKahn = numerar(tracoKahn({ base: G.dag, eyebrow: 'Ordenação
 export const passosCores = numerar(
   tracoColoracao({ base: G.rede, ordem: G.rede.nodes.map(n => n.id), eyebrow: 'Coloração gulosa' }),
   'p-cores'
+);
+export const passosWelsh = numerar(
+  tracoWelshPowell({ base: G.cores, eyebrow: 'Welsh–Powell' }),
+  'p-welsh'
 );
 export const passosBellman = numerar(
   tracoBellmanFord({ base: negativo, origem: 'S', eyebrow: 'Bellman–Ford de S' }),

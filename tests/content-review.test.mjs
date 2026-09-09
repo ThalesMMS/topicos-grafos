@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CONFIG } from '../public/presentation.config.js';
-import { tracoBellmanFord, passosPrim, passosFluxo } from '../public/slides/seminario/passos.js';
+import { tracoBellmanFord, passosPrim, passosFluxo, passosWelsh } from '../public/slides/seminario/passos.js';
 import { negativo } from '../public/slides/seminario/modelos.js';
 import { dag, ponderado } from '../public/slides/equilibrada/modelos.js';
 
@@ -54,17 +54,19 @@ test('conceitos vêm antes de mecanismos e execuções', () => {
   antes('topologica', 'poscomp_familias-pergunta');
   antes('kosaraju', 'poscomp_familias-pergunta');
   antes('alg-coloracao', 'p-cores-1');
-  antes('alg-ordem-cores', 'welsh-powell');
+  antes('alg-ordem-cores', 'p-welsh-1');
 });
 
-test('Welsh–Powell substitui o slide formal de A* e explica a ordem do guloso', () => {
+test('Welsh–Powell substitui o slide formal de A* e é executado por classes de cor', () => {
   const ids = new Set(CONFIG.slides.map(s => s.id));
   assert.ok(!ids.has('astar-adicional'));
-  const slide = CONFIG.slides.find(s => s.id === 'welsh-powell');
-  assert.ok(slide?.graph);
-  assert.match(slide.description, /mesmo algoritmo guloso/i);
-  assert.match(slide.items[0].text, /D\(4\), A\(3\), B\(3\), C\(2\), E\(2\)/);
-  assert.match(slide.items.at(-1).text, /pode usar mais cores/i);
+  assert.equal(passosWelsh.length, 5);
+  assert.match(passosWelsh[0].title, /D, A, B, C, E/);
+  assert.deepEqual(passosWelsh.slice(1, 4).map(s => s.rows.filter(r => r[2].startsWith('entra')).map(r => r[0])), [
+    ['D'], ['A', 'E'], ['B', 'C']
+  ]);
+  assert.match(passosWelsh.at(-1).description, /A, B e D formam uma clique/);
+  assert.equal(CONFIG.slides.filter(s => /^p-welsh-/.test(s.id)).length, 5);
 });
 
 test('passos de Prim formam uma árvore conectada de custo 13', () => {

@@ -158,36 +158,11 @@ b3 = b3.map(s => s.id === 'p-kahn-1'
     : s.id === 'alg-fluxo-viavel'
       ? { ...s, eyebrow: 'Fluxo em redes' }
       : s);
-const grausCor = Object.fromEntries(G.cores.nodes.map(n => [n.id, 0]));
-for (const e of G.cores.edges) { grausCor[e.from] += 1; grausCor[e.to] += 1; }
-const ordemWelshPowell = G.cores.nodes.map(n => n.id)
-  .sort((a, b) => grausCor[b] - grausCor[a] || a.localeCompare(b));
-const resultadoWelshPowell = A.colorir(G.cores, ordemWelshPowell);
-const welshPowell = {
-  id: 'welsh-powell',
-  type: 'steps',
-  eyebrow: 'Coloração · escolha da ordem',
-  title: 'Welsh–Powell começa pelos vértices de maior grau',
-  description: 'Welsh–Powell não troca a regra de coloração: ele escolhe uma ordem para o mesmo algoritmo guloso. A ideia é tratar primeiro os vértices que têm mais conflitos.',
-  graph: G.destacar(G.cores, {
-    notes: Object.fromEntries(G.cores.nodes.map(n => [
-      n.id,
-      `grau ${grausCor[n.id]} · cor ${resultadoWelshPowell.colors[n.id]}`
-    ])),
-    caption: `Ordem ${ordemWelshPowell.join(', ')}: três cores neste grafo.`
-  }),
-  items: [
-    step('Ordenar por grau decrescente', ordemWelshPowell.map(v => `${v}(${grausCor[v]})`).join(', ') + '.'),
-    step('Aplicar o guloso nessa ordem', 'Cada vértice recebe a menor cor que ainda não aparece entre seus vizinhos já coloridos.'),
-    step('Interpretar o resultado', 'Aqui aparecem três cores, que é o mínimo porque A, B e D formam uma clique. Em outros grafos, a heurística pode usar mais cores que o necessário.')
-  ]
-};
-
 // Coloração entra ANTES dos artigos: ela é o que dá sentido ao de Chaitin,
 // em que alocar registradores é literalmente colorir um grafo.
 let b4 = inserir(bloco4, 'enade_gulosa-resposta', ALG.coloracao);
 b4 = inserir(b4, 'alg-guloso-cores', P.passosCores);
-b4 = inserir(b4, 'alg-ordem-cores', [welshPowell, ...artigos]);
+b4 = inserir(b4, 'alg-ordem-cores', [...P.passosWelsh, ...artigos]);
 b4 = b4.map(s => s.id === 'alg-coloracao'
   ? { ...s, eyebrow: 'Outro problema com escolha gulosa' }
   : s.id === 'artigo-dantzig'

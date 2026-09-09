@@ -123,7 +123,7 @@ test('as execuções completas têm um slide por mudança de estado',()=>{
   // Kosaraju e Fleury aparecem explicitamente como exemplos delimitados.
   const passos=CONFIG.slides.filter(s=>/^p-/.test(s.id));
   const familias=new Set(passos.map(s=>/^p-([a-z]+)-/.exec(s.id)[1]));
-  for(const algoritmo of ['bfs','dfs','dijkstra','bellman','kruskal','prim','kahn','fluxo','cores'])
+  for(const algoritmo of ['bfs','dfs','dijkstra','bellman','kruskal','prim','kahn','fluxo','cores','welsh'])
     assert.ok(familias.has(algoritmo),`sem passo a passo: ${algoritmo}`);
   // Cada passo declara sua posição, para a turma saber onde está.
   for(const passo of passos) assert.match(passo.eyebrow,/passo \d+\/\d+/);
