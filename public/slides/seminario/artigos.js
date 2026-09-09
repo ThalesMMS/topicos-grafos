@@ -1,9 +1,8 @@
 /**
- * Quatro artigos, quatro aplicações DIFERENTES de grafos.
+ * Três artigos, três aplicações DIFERENTES de grafos.
  *
- * O critério de SELEÇÃO é a diversidade de domínio — logística, compiladores,
- * busca na web e descoberta de fármacos. A ORDEM é cronológica: 1959, 1982,
- * 1999, 2020. Em
+ * O critério de SELEÇÃO é a diversidade de domínio — logística, compiladores
+ * e descoberta de fármacos. A ORDEM é cronológica: 1959, 1982 e 2020. Em
  * cada um, o que muda é o que vira vértice e o que vira aresta, e é isso que o
  * slide de síntese compara.
  *
@@ -54,29 +53,10 @@ export const artigos = [
     limit: 'O trabalho de 1982 amplia uma proposta anterior de alocação por coloração para tratar spills. Uma heurística pode recorrer à memória mesmo quando existe uma k-coloração.'
   },
   {
-    id: 'artigo-pagerank',
-    type: 'article',
-    minutes: 3,
-    period: 'Aplicação 3 · busca na web',
-    year: '1999',
-    title: 'PageRank: calcular importância a partir dos links',
-    paper: 'The PageRank Citation Ranking: Bringing Order to the Web',
-    authors: 'Lawrence Page · Sergey Brin · Rajeev Motwani · Terry Winograd · Stanford InfoLab, TR 1999-66',
-    href: 'http://ilpubs.stanford.edu:8090/422/',
-    points: [
-      '**Vértice** = página. **Aresta** = link de uma página para outra. O grafo é dirigido.',
-      'Ideia: a importância de uma página vem da importância de quem aponta para ela — uma definição **recursiva** sobre o grafo.',
-      'Um navegante aleatório segue links ou salta para uma página escolhida ao acaso. O PageRank é a fração do tempo que ele passa em cada página, no longo prazo.',
-      'O cálculo usa probabilidades de transição derivadas dos links, com saltos aleatórios e tratamento das páginas sem saída.'
-    ],
-    connection: 'O sentido dos arcos indica quem aponta para quem. O grau de entrada conta links recebidos. PageRank também considera a importância das páginas de origem e como elas distribuem seus links.',
-    limit: 'PageRank mede importância pela estrutura de links. A relevância para uma consulta também depende do conteúdo e de outros critérios.'
-  },
-  {
     id: 'artigo-halicina',
     type: 'article',
     minutes: 3,
-    period: 'Aplicação 4 · biologia e química',
+    period: 'Aplicação 3 · biologia e química',
     year: '2020',
     title: 'Grafos moleculares na busca de antibióticos',
     paper: 'A Deep Learning Approach to Antibiotic Discovery',
@@ -96,7 +76,7 @@ export const artigos = [
     type: 'compare',
     minutes: 2,
     eyebrow: 'Comparação das aplicações',
-    title: 'Modelagem e saída nas quatro aplicações',
+    title: 'Modelagem e saída nas três aplicações',
     columns: [
       {
         title: '1959 · logística',
@@ -109,11 +89,6 @@ export const artigos = [
         items: ['Pergunta: cabe em k registradores?', 'Ferramenta: coloração', 'Saída: uma atribuição (ou um spill)']
       },
       {
-        title: '1999 · web',
-        description: 'vértice = página, aresta = link',
-        items: ['Pergunta: qual a importância de cada página?', 'Ferramenta: iteração de probabilidades', 'Saída: uma pontuação por página']
-      },
-      {
         title: '2020 · química',
         description: 'vértice = átomo, aresta = ligação',
         items: ['Pergunta: a molécula tem atividade antibacteriana?', 'Ferramenta: aprendizado sobre o grafo', 'Saída: uma previsão a testar']
@@ -121,7 +96,7 @@ export const artigos = [
     ],
     note: {
       kind: 'key',
-      title: 'O que os quatro têm em comum',
+      title: 'O que os três têm em comum',
       text: 'Cada aplicação define o significado dos vértices e das arestas, a saída esperada e como verificar o resultado. Esses mesmos critérios orientam a resolução das questões.'
     }
   }

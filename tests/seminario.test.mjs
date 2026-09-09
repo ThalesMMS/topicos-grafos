@@ -50,13 +50,18 @@ test('a questão mostra só o recorte, as alternativas e os votos',()=>{
 
 test('cada artigo é de uma aplicação DIFERENTE, sem repetir domínio',()=>{
   const papers=CONFIG.slides.filter(s=>s.type==='article');
-  assert.ok(papers.length>=3,`só ${papers.length} artigo(s)`);
+  assert.equal(papers.length,3,`esperados três artigos; encontrados ${papers.length}`);
   for(const p of papers)assert.ok(p.href&&p.authors&&p.paper&&p.limit&&p.connection,`artigo incompleto: ${p.paper}`);
   // Cada artigo declara seu domínio no `period`. O desequilíbrio que motivou
   // esta regra era ter três artigos de roteirização; um por domínio, tudo bem.
   const dominios=papers.map(p=>p.period.replace(/^Aplicação \d+ · /,''));
   assert.equal(new Set(dominios).size,papers.length,`domínios repetidos: ${dominios.join(' / ')}`);
   assert.equal(new Set(papers.map(p=>p.year)).size,papers.length,'dois artigos do mesmo ano');
+});
+
+test('PageRank não faz parte do roteiro ativo',()=>{
+  assert.ok(!CONFIG.slides.some(s=>s.id==='artigo-pagerank'));
+  assert.doesNotMatch(JSON.stringify(CONFIG.slides),/PageRank/i);
 });
 
 test('slides de artigo não exibem botão nem link externo',()=>{

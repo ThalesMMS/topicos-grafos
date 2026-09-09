@@ -49,8 +49,7 @@ const bloco1=[
       {title:'Parte 4 · Heurística e aplicações',items:[
         'Gulosa, Dijkstra e A*: qual número decide',
         'Coloração: guloso, efeito da ordem e Welsh–Powell',
-        'PageRank: a web como dígrafo',
-        'Quatro artigos: logística, compiladores, web e química']}
+        'Três artigos: logística, compiladores e química']}
     ]},
   // Este slide abre o seminário: não pode citar algoritmo nenhum, porque
   // nenhum foi apresentado ainda. A tabela que liga pergunta a algoritmo está
@@ -96,7 +95,7 @@ const bloco3=[
   {id:'fila-nao-e-bfs',type:'compare',minutes:1,title:'Fila FIFO e fila de prioridade têm regras distintas',columns:[{title:'BFS',items:['Primeiro a entrar, primeiro a sair.','Camadas por quantidade de arestas.']},{title:'Prim / Dijkstra',items:['Prim: menor aresta cruzando o corte.','Dijkstra: menor distância estimada.']}],description:'Na BFS, os vértices saem na ordem em que entraram. Prim e Dijkstra escolhem pela menor prioridade, que pode mudar durante a execução.'},
 ];
 const bloco4=[
-  {id:'heuristicas-intro',type:'section',minutes:.5,title:'Busca com heurísticas e aplicações de grafos',description:'A questão da transportadora introduz o uso de estimativas. Depois, quatro artigos mostram outras perguntas que podem ser modeladas com grafos.'},
+  {id:'heuristicas-intro',type:'section',minutes:.5,title:'Busca com heurísticas e aplicações de grafos',description:'A questão da transportadora introduz o uso de estimativas. Depois, três artigos mostram outras perguntas que podem ser modeladas com grafos.'},
   heuristicas,
   pergunta('enade_gulosa'),
   {id:'gulosa-quadro',type:'trace',minutes:2,title:'Quatro escolhas, sempre olhando h',graph:M.destacar(M.cidades,{edges:[['Manaus','P. Velho'],['P. Velho','Cuiabá'],['Cuiabá','Goiânia'],['Goiânia','S. Paulo']],caption:M.cidades.caption}),headers:['em','comparar estimativas','ir para'],rows:[['Manaus','2464 < 2665','P. Velho'],['P. Velho','1326 < 1489 < 2693','Cuiabá'],['Cuiabá','809 < 2464','Goiânia'],['Goiânia','0 < 1326 < 1489','São Paulo']],description:'A escolha segue a regra local do enunciado. Nenhum custo de trecho foi somado.'},
@@ -203,7 +202,7 @@ const ORCAMENTO = {
   definition: 1,
   trace: 1,
   steps: 1.25,
-  article: 2,
+  article: 8 / 3,      // 2min40s: os três artigos preservam os oito minutos do bloco
   votacao: 2,        // ler o enunciado da prova, pensar e votar
   gabarito: 1        // resolução comentada
 };

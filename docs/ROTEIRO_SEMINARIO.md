@@ -1,9 +1,9 @@
 # Grafos, rotas e algoritmos — roteiro de ensaio
 
 Revisão de conteúdo de 07/09/2026. Roteiro ativo: `public/slides/seminario/index.js`.
-São 114 slides, quatro partes e orçamento total de 80 minutos. Os tempos são a soma
+São 113 slides, quatro partes e orçamento total de 80 minutos. Os tempos são a soma
 dos campos `minutes`, não uma duração medida de fala. Há 15 segundos por slide
-de passo, dois minutos por questão, um minuto por resolução e dois minutos por
+de passo, dois minutos por questão, um minuto por resolução e 2min40s por
 artigo. O ensaio deve orientar o ritmo de apresentação.
 
 ## Organização
@@ -13,7 +13,7 @@ artigo. O ensaio deve orientar o ritmo de apresentação.
 | 1 | 40 | 24min30s | Modelagem, representações, conectividade, BFS, DFS e Dijkstra. ENADE 2021 Q34. |
 | 2 | 13 | 13min45s | Métricas da BFS, OSPF, pesos negativos, Bellman–Ford e Floyd–Warshall. ENADE 2023 Q11 e POSCOMP 2014 Q37. |
 | 3 | 39 | 23min15s | Árvores, Kruskal, Prim, topológica por DFS e Kahn, Kosaraju, Euler/Hamilton e fluxo. POSCOMP 2012 Q35. |
-| 4 | 22 | 18min30s | Busca gulosa, ENADE 2023 Q32, comparação com A*, coloração, Welsh–Powell e quatro artigos. |
+| 4 | 21 | 18min30s | Busca gulosa, ENADE 2023 Q32, comparação com A*, coloração, Welsh–Powell e três artigos. |
 
 As partes têm cargas diferentes. Cada apresentador deve ensaiar sua parte inteira,
 incluindo leitura das questões e explicação das tabelas. A versão ativa termina
@@ -68,12 +68,6 @@ Conflitos entre valores viram arestas e registradores viram cores. O trabalho
 amplia a alocação por coloração para escolher spills a partir do grafo e de custos.
 Vai além de colorir numa ordem fixa. [Resumo do autor na IBM](https://research.ibm.com/publications/register-allocation-andamp-spilling-via-graph-coloring),
 [publicação](https://dl.acm.org/doi/10.1145/800230.806984).
-
-**1999 — web.** Page, Brin, Motwani e Winograd, *The PageRank Citation Ranking:
-Bringing Order to the Web*. Links formam um dígrafo. O navegante inclui saltos
-aleatórios e tratamento das páginas sem saída. A iteração usa probabilidades de
-transição, não a matriz de adjacência bruta. [Relatório original](http://ilpubs.stanford.edu:8090/422/),
-[explicação técnica de Stanford](https://www-nlp.stanford.edu/IR-book/html/htmledition/pagerank-1.html).
 
 **2020 — química.** Stokes et al., *A Deep Learning Approach to Antibiotic Discovery*.
 A rede propaga mensagens pelas ligações e usa descritores moleculares na previsão.
