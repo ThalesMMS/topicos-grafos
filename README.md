@@ -2,7 +2,7 @@
 
 Seminário revisado: **110 slides, 80 minutos de orçamento, quatro integrantes**.
 Cinco questões originais (três ENADE e duas POSCOMP), passos de algoritmos com
-grafos em estilo manuscrito, tópico adicional A* e quatro artigos sobre logística,
+grafos em estilo manuscrito, comparação visual de heurísticas, Welsh–Powell e quatro artigos sobre logística,
 compiladores, web e química. A duração real depende do ensaio; os slides de passo
 têm apenas 15 segundos previstos cada.
 

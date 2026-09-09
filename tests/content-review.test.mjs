@@ -53,6 +53,18 @@ test('conceitos vêm antes de mecanismos e execuções', () => {
   antes('union-find', 'p-kruskal-1');
   antes('topologica', 'poscomp_familias-pergunta');
   antes('kosaraju', 'poscomp_familias-pergunta');
+  antes('alg-coloracao', 'p-cores-1');
+  antes('alg-ordem-cores', 'welsh-powell');
+});
+
+test('Welsh–Powell substitui o slide formal de A* e explica a ordem do guloso', () => {
+  const ids = new Set(CONFIG.slides.map(s => s.id));
+  assert.ok(!ids.has('astar-adicional'));
+  const slide = CONFIG.slides.find(s => s.id === 'welsh-powell');
+  assert.ok(slide?.graph);
+  assert.match(slide.description, /mesmo algoritmo guloso/i);
+  assert.match(slide.items[0].text, /D\(4\), A\(3\), B\(3\), C\(2\), E\(2\)/);
+  assert.match(slide.items.at(-1).text, /pode usar mais cores/i);
 });
 
 test('passos de Prim formam uma árvore conectada de custo 13', () => {
