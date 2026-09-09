@@ -247,13 +247,14 @@ function stepsSlide(slide) {
  */
 function carouselMarkup(slide) {
   const start = slide.carouselStart || 0;
-  return `<div class="table-carousel" role="region" aria-label="Passagens de Bellman–Ford" aria-roledescription="carrossel" data-carousel data-step="${start}">
+  return `<div class="table-carousel" role="region" aria-label="${escapeHtml(slide.carouselLabel || 'Passagens de Bellman–Ford')}" aria-roledescription="carrossel" data-carousel data-step="${start}">
     <div class="carousel-controls"><button type="button" data-carousel-prev aria-label="Passagem anterior" ${start === 0 ? 'disabled' : ''}>←</button>
       <span data-carousel-status aria-live="polite">${start + 1} / ${slide.carousel.length} · ${text(slide.carousel[start].title)}</span>
       <button type="button" data-carousel-next aria-label="Próxima passagem" ${start === slide.carousel.length - 1 ? 'disabled' : ''}>→</button></div>
     ${slide.carousel.map((frame, index) => `<div data-carousel-panel ${index === start ? '' : 'hidden'}>
       <table class="slide-table trace-table"><thead><tr>${slide.headers.map(h => `<th scope="col">${text(h)}</th>`).join('')}</tr></thead>
-      <tbody>${frame.rows.map((row, rowIndex) => `<tr class="${frame.changedRows.includes(rowIndex) ? 'carousel-changed' : ''}">${row.map((cell, i) => i ? `<td>${text(cell)}</td>` : `<th scope="row">${text(cell)}</th>`).join('')}</tr>`).join('')}</tbody></table>
+      <tbody>${frame.rows.map((row, rowIndex) => `<tr class="${frame.changedRows.includes(rowIndex) ? 'carousel-changed' : ''}">${row.map((cell, i) => i ? `<td class="${frame.changedCells?.some(([r, c]) => r === rowIndex && c === i) ? 'carousel-cell-changed' : ''}">${text(cell)}</td>` : `<th scope="row">${text(cell)}</th>`).join('')}</tr>`).join('')}</tbody></table>
+      ${frame.description ? `<p class="carousel-description">${text(frame.description)}</p>` : ''}
     </div>`).join('')}
     <div class="carousel-steps" aria-label="Escolher passagem">${slide.carousel.map((frame, index) => `<button type="button" data-carousel-goto="${index}" data-title="${escapeHtml(frame.title)}" aria-label="${escapeHtml(frame.title)}" aria-pressed="${index === start}">${index}</button>`).join('')}</div>
   </div>`;

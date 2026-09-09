@@ -173,3 +173,6 @@
 .presenter path.gd-edge--updated{stroke:#b65019;stroke-width:4;stroke-dasharray:8 4}
 .presenter text.gd-edge--updated{fill:#b65019;stroke:none;font-weight:700}
 [data-carousel-graph][hidden]{display:none}
+
+.presenter .slide-table td.carousel-cell-changed{background:#e7e9af;font-weight:700}
+.carousel-description{font-size:.9rem;line-height:1.45;min-height:3.9em;margin:.6rem 0;color:#354c40}
