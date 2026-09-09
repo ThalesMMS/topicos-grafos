@@ -84,7 +84,6 @@
 .article-date>span{font:400 clamp(4rem,7vw,7rem)/1 Georgia,serif;color:#17685b}
 .article-paper{font:italic 1.25rem/1.4 Georgia,serif;margin-top:2rem}
 .article-authors{font-size:.85rem;color:#535d61;line-height:1.6}
-.article-date a{display:inline-block;font-size:.85rem;margin-top:.6rem}
 .article-connection{border-top:2px solid #798e7d;padding-top:1rem;font-size:1.05rem;line-height:1.5}
 .article-limit{font-size:.9rem;line-height:1.5;color:#62665e}
 .source-links{margin-top:2rem}

@@ -59,6 +59,14 @@ test('cada artigo é de uma aplicação DIFERENTE, sem repetir domínio',()=>{
   assert.equal(new Set(papers.map(p=>p.year)).size,papers.length,'dois artigos do mesmo ano');
 });
 
+test('slides de artigo não exibem botão nem link externo',()=>{
+  for(const artigo of CONFIG.slides.filter(s=>s.type==='article')){
+    const markup=slideMarkup(artigo,{polls:CONFIG.polls});
+    assert.ok(!markup.includes('Ler artigo'),`${artigo.id}: botão ainda visível`);
+    assert.ok(!markup.includes('<a '),`${artigo.id}: link externo ainda renderizado`);
+  }
+});
+
 test('o texto do deck é impessoal, sem "vimos" nem comandos ao leitor',()=>{
   // Um seminário descreve o que o algoritmo faz; não narra o que "nós fizemos"
   // nem manda o leitor fazer coisas. Sem este teste, uma frase assim volta na

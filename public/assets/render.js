@@ -350,7 +350,7 @@ function originalQuestionSlide(slide) {
 }
 
 function articleSlide(slide) {
-  return `<div class="slide-content article-layout"><aside class="article-date"><p class="eyebrow">${text(slide.period)}</p><span>${text(slide.year)}</span><p class="article-paper">${text(slide.paper)}</p><p class="article-authors">${text(slide.authors)}</p><a href="${safeHref(slide.href)}" target="_blank" rel="noopener">Ler artigo ↗</a></aside><div>${titleOf(slide,'concept-title')}${pointsOf(slide)}<p class="article-connection">${text(slide.connection)}</p><p class="article-limit"><strong>Limitações.</strong> ${text(slide.limit)}</p></div></div>`;
+  return `<div class="slide-content article-layout"><aside class="article-date"><p class="eyebrow">${text(slide.period)}</p><span>${text(slide.year)}</span><p class="article-paper">${text(slide.paper)}</p><p class="article-authors">${text(slide.authors)}</p></aside><div>${titleOf(slide,'concept-title')}${pointsOf(slide)}<p class="article-connection">${text(slide.connection)}</p><p class="article-limit"><strong>Limitações.</strong> ${text(slide.limit)}</p></div></div>`;
 }
 
 /** Pergunta com resposta escondida: o <details> abre no clique ou no Enter. */
